@@ -1,0 +1,9 @@
+plugins {
+    id("java-library")
+}
+
+dependencies {
+    api(project(':api-bukkit'))
+
+    api 'org.spigotmc:spigot:1.19.2-R0.1-SNAPSHOT'
+}

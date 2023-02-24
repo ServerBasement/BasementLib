@@ -1,0 +1,11 @@
+name: BasementLib
+main: it.ohalee.basementlib.bukkit.BasementBukkitMain
+version: ${pluginVersion}
+api-version: 1.13
+author: ohAlee
+softdepend:
+  - "PlaceholderAPI"
+commands:
+  basement:
+    aliases:
+      - "basementlib"

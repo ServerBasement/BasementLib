@@ -1,0 +1,41 @@
+plugins {
+    id 'net.kyori.blossom' version '1.3.0'
+    id 'com.github.johnrengelman.shadow' version '7.0.0'
+}
+
+repositories {
+    maven { url 'https://repo.velocitypowered.com/releases/' }
+    maven { url 'https://jitpack.io/' }
+}
+
+dependencies {
+    implementation project(":common")
+    implementation project(":api-velocity")
+
+    compileOnly 'com.google.inject:guice:5.1.0'
+    compileOnly 'com.velocitypowered:velocity-api:3.1.1'
+    annotationProcessor 'com.velocitypowered:velocity-api:3.1.1'
+
+    compileOnly 'org.projectlombok:lombok:1.18.24'
+    annotationProcessor 'org.projectlombok:lombok:1.18.24'
+}
+
+blossom {
+    replaceTokenIn('src/main/java/it/ohalee/basementlib/velocity/BasementVelocity.java')
+    replaceToken '@version@', project.ext.fullVersion
+}
+
+shadowJar {
+    archiveFileName = "BasementLib-Velocity-${project.ext.fullVersion}.jar"
+
+    dependencies {
+        include(dependency('it.ohalee.basementlib:.*'))
+        include(dependency('org.mariadb.jdbc:.*'))
+        include(dependency('com.zaxxer:HikariCP:.*'))
+        include(dependency('org.redisson:redisson:.*'))
+    }
+}
+
+artifacts {
+    archives shadowJar
+}

@@ -1,0 +1,49 @@
+plugins {
+    id 'java-library'
+    id 'maven-publish'
+}
+
+subprojects {
+    apply plugin: 'java'
+    apply plugin: 'maven-publish'
+
+    group = 'it.ohalee.basementlib'
+    version = '1.0.0'
+
+    sourceCompatibility = 1.17
+    targetCompatibility = 1.17
+
+    tasks.withType(JavaCompile).tap {
+        configureEach {
+            options.encoding = 'UTF-8'
+        }
+    }
+
+    project.ext.fullVersion = version
+
+    repositories {
+        mavenCentral()
+        mavenLocal()
+        maven { url 'https://libraries.minecraft.net/' }
+        maven { url = uri("https://repo.papermc.io/repository/maven-public/") }
+    }
+
+    dependencies {
+        compileOnly 'org.checkerframework:checker-qual:3.21.2'
+        compileOnly 'org.jetbrains:annotations:23.0.0'
+
+        compileOnly 'org.projectlombok:lombok:1.18.24'
+        annotationProcessor 'org.projectlombok:lombok:1.18.24'
+
+        testCompileOnly 'org.projectlombok:lombok:1.18.24'
+        testAnnotationProcessor 'org.projectlombok:lombok:1.18.24'
+    }
+
+    publishing {
+        publications {
+            shadow(MavenPublication) {
+                from components.java
+            }
+        }
+    }
+}

@@ -1,0 +1,43 @@
+plugins {
+    id 'com.github.johnrengelman.shadow' version '7.0.0'
+}
+
+repositories {
+    maven { url 'https://repo.papermc.io/repository/maven-public/' }
+    maven { url 'https://repo.extendedclip.com/content/repositories/placeholderapi/' }
+}
+
+dependencies {
+    implementation project(':common')
+    implementation project(':api-bukkit')
+
+    implementation project('nms:V1_8_R3')
+    implementation project('nms:V1_19_R1')
+
+    compileOnly 'app.ashcon:sportpaper:1.8.8'
+    compileOnly 'me.clip:placeholderapi:2.11.1'
+
+    compileOnly 'org.projectlombok:lombok:1.18.24'
+    annotationProcessor 'org.projectlombok:lombok:1.18.24'
+}
+
+processResources {
+    filesMatching('plugin.yml') {
+        expand 'pluginVersion': project.ext.fullVersion
+    }
+}
+
+shadowJar {
+    archiveFileName = "BasementLib-Bukkit-${project.ext.fullVersion}.jar"
+
+    dependencies {
+        include(dependency('it.ohalee.basementlib:.*'))
+        include(dependency('org.mariadb.jdbc:.*'))
+        include(dependency('com.zaxxer:HikariCP:.*'))
+        include(dependency('org.redisson:redisson:.*'))
+    }
+}
+
+artifacts {
+    archives shadowJar
+}
