@@ -7,6 +7,7 @@ import it.ohalee.basementlib.api.redis.RedisManager;
 import it.ohalee.basementlib.api.remote.RemoteCerebrumService;
 import it.ohalee.basementlib.api.remote.RemoteVelocityService;
 import it.ohalee.basementlib.api.server.ServerManager;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.UUID;
 
@@ -20,52 +21,55 @@ public interface BasementLib {
     UUID getUuid();
 
     /**
-     * Reload the configuration
-     */
-    void reloadConfig();
-
-    /**
      * Gets the Redis Manager
      *
      * @return Redis Manager
      */
-    RedisManager getRedisManager();
+    @Nullable RedisManager getRedisManager();
 
     /**
      * Gets the Server Manager
      *
      * @return Server Manager
      */
-    ServerManager getServerManager();
+    @Nullable ServerManager getServerManager();
 
     /**
      * Gets the remote instance of velocity service
      *
      * @return remote instance of velocity service
      */
-    RemoteVelocityService getRemoteVelocityService();
+    @Nullable RemoteVelocityService getRemoteVelocityService();
 
     /**
      * Gets the remote instance of cerebrum service
      *
      * @return remote instance of cerebrum service
      */
-    RemoteCerebrumService getRemoteCerebrumService();
+    @Nullable RemoteCerebrumService getRemoteCerebrumService();
 
     /**
      * Gets the default server database
      *
      * @return the default maria database
      */
-    AbstractMariaDatabase getDatabase();
+    @Nullable AbstractMariaDatabase getDatabase();
 
     /**
      * Gets a new Connector object
      *
      * @return connector object
      */
-    Connector getConnector(int minPoolSize, int maxPoolSize, String poolName);
+    Connector createConnector(int minPoolSize, int maxPoolSize, String poolName);
 
+    /**
+     * Gets a holder instance
+     *
+     * @param key  the key
+     * @param type the type
+     * @param <T>  the type
+     * @return the holder instance
+     */
     <T extends Holder> T getHolder(Class<?> key, Class<T> type);
 
 }

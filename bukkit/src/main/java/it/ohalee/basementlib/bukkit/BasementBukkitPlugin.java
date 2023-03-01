@@ -21,7 +21,6 @@ import java.io.File;
 public class BasementBukkitPlugin extends AbstractBasementPlugin {
 
     private final JavaPlugin plugin;
-    private final File config;
     private BasementBukkit basement;
     private BukkitTask task;
 
@@ -29,11 +28,10 @@ public class BasementBukkitPlugin extends AbstractBasementPlugin {
 
     public BasementBukkitPlugin(JavaPlugin plugin) {
         this.plugin = plugin;
-        config = new File(plugin.getDataFolder(), "config.yml");
     }
 
     @Override
-    public void init() {
+    protected void init() {
         basement = new StandardBasementBukkit(this, plugin);
     }
 

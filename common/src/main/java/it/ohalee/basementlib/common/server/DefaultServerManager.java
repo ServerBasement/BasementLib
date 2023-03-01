@@ -1,6 +1,6 @@
 package it.ohalee.basementlib.common.server;
 
-import it.ohalee.basementlib.api.BasementLib;
+import it.ohalee.basementlib.api.redis.RedisManager;
 import it.ohalee.basementlib.api.server.BukkitServer;
 import it.ohalee.basementlib.api.server.ServerManager;
 import lombok.Setter;
@@ -25,12 +25,11 @@ public class DefaultServerManager implements ServerManager {
     private Consumer<BukkitServer> serverRemoveConsumer = server -> {
     };
 
-    public DefaultServerManager(BasementLib basement) {
-        servers = basement.getRedisManager().getRedissonClient().getMapCache("servers");
+    public DefaultServerManager(RedisManager redisManager) {
+        servers = redisManager.getRedissonClient().getMapCache("servers");
         servers.addListener((EntryCreatedListener<String, BukkitServer>) event -> onServerAdd(event.getValue()));
         servers.addListener((EntryRemovedListener<String, BukkitServer>) event -> onServerRemove(event.getValue()));
         servers.addListener((EntryExpiredListener<String, BukkitServer>) event -> onServerRemove(event.getValue()));
-
     }
 
     @Override
@@ -57,7 +56,6 @@ public class DefaultServerManager implements ServerManager {
     public boolean isOnline(String name) {
         BukkitServer server = servers.get(name);
         if (server == null) return false;
-
         return server.isServerOnline();
     }
 
@@ -72,7 +70,6 @@ public class DefaultServerManager implements ServerManager {
         for (BukkitServer server : servers.values()) {
             if (server.isServerOnline()) onlineServers.add(server);
         }
-
         return onlineServers;
     }
 

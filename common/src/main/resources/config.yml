@@ -1,0 +1,38 @@
+# +----------------------------------------------------------------------------------------------+ #
+# |                                                                                              | #
+# |                                       STORAGE SETTINGS                                       | #
+# |                                                                                              | #
+# +----------------------------------------------------------------------------------------------+ #
+
+server:
+  # The id of the server. This is used to identify the server.
+  # If you are using Cerebrum to manage your servers, this is automatically set.
+  id: "hub_1"
+
+# Settings for MySQL / MariaDB.
+mysql:
+  enabled: false
+  address: localhost
+  # Default database
+  database: minecraft
+  username: root
+  password: ''
+
+  pool-settings:
+    maximum-pool-size: 10
+    minimum-idle: 10
+    maximum-lifetime: 1800000 # 30 minutes
+    keepalive-time: 0
+    connection-timeout: 5000 # 5 seconds
+
+# Settings for Redis.
+# Port 6379 is used by default; set address to "host:port" if differs
+redis:
+  enabled: true
+    # If multiple addresses are specified, redis-cluster will be used.
+  addresses:
+    - "localhost"
+  username: ''
+  password: ''
+  netty-threads: 32
+  threads: 16

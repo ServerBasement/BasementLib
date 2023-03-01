@@ -6,5 +6,12 @@ dependencies {
     api('org.mariadb.jdbc:mariadb-java-client:3.0.6')
     api('com.zaxxer:HikariCP:5.0.1')
 
-    api('org.redisson:redisson:3.18.0')
+    api('org.redisson:redisson:3.19.3')
+
+    api('org.spongepowered:configurate-core:3.7.2') {
+        transitive = false
+    }
+    api('org.spongepowered:configurate-yaml:3.7.2') {
+        transitive = false
+    }
 }

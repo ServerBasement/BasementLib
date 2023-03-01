@@ -14,7 +14,7 @@ public class PlayerListener {
 
     public PlayerListener(BasementVelocity velocity) {
         this.velocity = velocity;
-        playersCount = velocity.getBasement().getRedisManager().getRedissonClient().getAtomicLong("playersCount");
+        playersCount = velocity.getRedisManager().getRedissonClient().getAtomicLong("playersCount");
         playersCount.set(velocity.getServer().getPlayerCount());
     }
 

@@ -2,6 +2,7 @@ package it.ohalee.basementlib.common.persistence.hikari;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
+import it.ohalee.basementlib.api.persistence.StorageCredentials;
 import it.ohalee.basementlib.api.persistence.generic.connection.Connector;
 import it.ohalee.basementlib.common.persistence.hikari.property.PropertiesProvider;
 
@@ -22,6 +23,11 @@ public abstract class HikariConnector implements Connector {
         config = getConfig(minPoolSize, maxPoolSize, poolName);
         config.setDriverClassName(driver);
         config.setDataSourceProperties(provider.getBuild());
+    }
+
+    @Override
+    public void connect(StorageCredentials credentials) {
+        connect(credentials.address(), credentials.username(), credentials.password());
     }
 
     @Override

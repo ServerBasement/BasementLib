@@ -9,11 +9,14 @@ import com.velocitypowered.api.plugin.Plugin;
 import com.velocitypowered.api.plugin.annotation.DataDirectory;
 import com.velocitypowered.api.proxy.ProxyServer;
 import it.ohalee.basementlib.api.BasementLib;
+import it.ohalee.basementlib.api.config.generic.adapter.ConfigurationAdapter;
+import it.ohalee.basementlib.api.plugin.logging.PluginLogger;
 import it.ohalee.basementlib.api.redis.messages.implementation.BukkitNotifyShutdownMessage;
 import it.ohalee.basementlib.api.redis.messages.implementation.ServerShutdownMessage;
 import it.ohalee.basementlib.api.redis.messages.implementation.VelocityNotifyMessage;
 import it.ohalee.basementlib.api.remote.RemoteVelocityService;
 import it.ohalee.basementlib.common.plugin.AbstractBasementPlugin;
+import it.ohalee.basementlib.common.plugin.logging.Slf4jPluginLogger;
 import it.ohalee.basementlib.velocity.commands.CreateServerCommand;
 import it.ohalee.basementlib.velocity.listeners.PlayerListener;
 import it.ohalee.basementlib.velocity.redis.handler.BukkitNotifyShutdownHandler;
@@ -21,11 +24,10 @@ import it.ohalee.basementlib.velocity.redis.handler.ServerShutdownHandler;
 import it.ohalee.basementlib.velocity.remote.RemoteVelocityServiceImpl;
 import lombok.Getter;
 import org.redisson.api.RRemoteService;
+import org.slf4j.Logger;
 
-import java.io.File;
 import java.nio.file.Path;
 import java.util.concurrent.Executors;
-import java.util.logging.Logger;
 
 @Plugin(
         id = "basementlib",
@@ -36,41 +38,58 @@ import java.util.logging.Logger;
 @Getter
 public class BasementVelocity extends AbstractBasementPlugin {
 
-    private final ProxyServer server;
-    private final File dataFolder;
-    private final File configFile;
+    @Inject
+    private ProxyServer server;
+
+    @Inject
+    @DataDirectory
+    private Path configDirectory;
     private final Logger logger;
 
     @Inject
-    public BasementVelocity(ProxyServer server, Logger logger, @DataDirectory Path dataDirectory) {
-        this.server = server;
+    public BasementVelocity(Logger logger) {
         this.logger = logger;
-
-        dataFolder = dataDirectory.toFile();
-        configFile = new File(dataDirectory.toFile(), "config.yml");
     }
 
     @Subscribe(order = PostOrder.FIRST)
     public void onInitialize(ProxyInitializeEvent event) {
+        load();
         enable();
 
-        basement.getRedisManager().registerTopicListener(ServerShutdownMessage.TOPIC, new ServerShutdownHandler(server));
-        basement.getRedisManager().registerTopicListener(BukkitNotifyShutdownMessage.TOPIC, new BukkitNotifyShutdownHandler(server));
-        RRemoteService remoteService = basement.getRedisManager().getRedissonClient().getRemoteService();
-        remoteService.register(RemoteVelocityService.class, new RemoteVelocityServiceImpl(this), 3, Executors.newSingleThreadExecutor());
+        if (getRedisManager() != null) {
+            getRedisManager().registerTopicListener(ServerShutdownMessage.TOPIC, new ServerShutdownHandler(server));
+            getRedisManager().registerTopicListener(BukkitNotifyShutdownMessage.TOPIC, new BukkitNotifyShutdownHandler(server));
 
-        // TODO: 23/02/2023 cerebrum can not exist
-        server.getCommandManager().register(server.getCommandManager().metaBuilder("createserver").aliases("cs").build(), new CreateServerCommand(this));
+            RRemoteService remoteService = getRedisManager().getRedissonClient().getRemoteService();
+            remoteService.register(RemoteVelocityService.class, new RemoteVelocityServiceImpl(this), 3, Executors.newSingleThreadExecutor());
 
-        server.getEventManager().register(this, new PlayerListener(this));
+            server.getCommandManager().register(server.getCommandManager().metaBuilder("createserver").aliases("cs").build(), new CreateServerCommand(this));
 
-        basement.getRedisManager().publishMessage(new VelocityNotifyMessage(false));
+            getRedisManager().publishMessage(new VelocityNotifyMessage(false));
+
+            server.getEventManager().register(this, new PlayerListener(this));
+        }
     }
 
     @Subscribe
     public void onProxyShutdown(ProxyShutdownEvent event) {
-        basement.getRedisManager().publishMessage(new VelocityNotifyMessage(true));
+        if (getRedisManager() != null) getRedisManager().publishMessage(new VelocityNotifyMessage(true));
         disable();
+    }
+
+    @Override
+    public Path getDataDirectory() {
+        return this.configDirectory.toAbsolutePath();
+    }
+
+    @Override
+    public PluginLogger provideLogger() {
+        return new Slf4jPluginLogger(logger);
+    }
+
+    @Override
+    public ConfigurationAdapter provideConfigurationAdapter(String configName, boolean create) {
+        return new VelocityConfigAdapter(this, resolveConfig(configName, create));
     }
 
     @Override
@@ -80,17 +99,10 @@ public class BasementVelocity extends AbstractBasementPlugin {
 
     @Override
     protected void registerCommands() {
-
     }
 
     @Override
     protected void registerListeners() {
-
-    }
-
-    @Override
-    public File getConfig() {
-        return configFile;
     }
 
 }
