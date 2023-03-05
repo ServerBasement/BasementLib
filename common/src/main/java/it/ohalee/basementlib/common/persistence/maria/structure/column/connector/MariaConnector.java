@@ -54,7 +54,8 @@ public class MariaConnector extends HikariConnector {
 
     @Override
     public void execute(String query) {
-        try (Connection connection = source.getConnection(); Statement statement = connection.createStatement()) {
+        try (Connection connection = source.getConnection();
+             Statement statement = connection.createStatement()) {
             statement.execute(query);
         } catch (SQLException throwable) {
             Logger.getGlobal().severe("Error on sql query:" + query);
@@ -74,7 +75,8 @@ public class MariaConnector extends HikariConnector {
 
     @Override
     public QueryData executeReturn(String query) {
-        try (Connection connection = source.getConnection(); PreparedStatement statement = connection.prepareStatement(query)) {
+        try (Connection connection = source.getConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
             return new QueryDataImpl(statement.executeQuery());
         } catch (SQLException throwable) {
             Logger.getGlobal().severe("Error on sql query:" + query);

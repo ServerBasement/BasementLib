@@ -26,6 +26,7 @@ import lombok.Getter;
 import org.redisson.api.RRemoteService;
 import org.slf4j.Logger;
 
+import java.io.File;
 import java.nio.file.Path;
 import java.util.concurrent.Executors;
 
@@ -88,8 +89,8 @@ public class BasementVelocity extends AbstractBasementPlugin {
     }
 
     @Override
-    public ConfigurationAdapter provideConfigurationAdapter(String configName, boolean create) {
-        return new VelocityConfigAdapter(this, resolveConfig(configName, create));
+    public ConfigurationAdapter provideConfigurationAdapter(File file, boolean create) {
+        return new VelocityConfigAdapter(this, resolveConfig(file, create));
     }
 
     @Override

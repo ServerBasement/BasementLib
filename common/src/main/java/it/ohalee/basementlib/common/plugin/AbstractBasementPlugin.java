@@ -3,7 +3,6 @@ package it.ohalee.basementlib.common.plugin;
 import it.ohalee.basementlib.api.BasementLib;
 import it.ohalee.basementlib.api.BasementProvider;
 import it.ohalee.basementlib.api.persistence.StorageCredentials;
-import it.ohalee.basementlib.api.persistence.generic.Holder;
 import it.ohalee.basementlib.api.persistence.generic.connection.Connector;
 import it.ohalee.basementlib.api.persistence.maria.structure.AbstractMariaDatabase;
 import it.ohalee.basementlib.api.persistence.maria.structure.AbstractMariaHolder;
@@ -16,7 +15,7 @@ import it.ohalee.basementlib.api.server.ServerManager;
 import it.ohalee.basementlib.common.config.BasementConfiguration;
 import it.ohalee.basementlib.api.config.generic.adapter.ConfigurationAdapter;
 import it.ohalee.basementlib.common.config.ConfigKeys;
-import it.ohalee.basementlib.common.persistence.hikari.TypeHolder;
+import it.ohalee.basementlib.common.persistence.maria.structure.MariaHolder;
 import it.ohalee.basementlib.common.persistence.maria.structure.column.connector.MariaConnector;
 import it.ohalee.basementlib.api.plugin.logging.PluginLogger;
 import it.ohalee.basementlib.common.redis.DefaultRedisManager;
@@ -24,17 +23,16 @@ import it.ohalee.basementlib.common.server.DefaultServerManager;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.redisson.api.RRemoteService;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.lang.reflect.InvocationTargetException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.HashMap;
 import java.util.UUID;
 
 public abstract class AbstractBasementPlugin implements BasementPlugin, BasementLib {
 
-    private final UUID uuid = UUID.randomUUID();
+    private static final UUID uuid = UUID.randomUUID();
 
     private @Nullable RedisManager redisManager;
     private @Nullable ServerManager serverManager;
@@ -43,7 +41,6 @@ public abstract class AbstractBasementPlugin implements BasementPlugin, Basement
 
     private @Nullable AbstractMariaDatabase database;
     private @Nullable AbstractMariaHolder holder;
-    private final HashMap<Class<?>, Holder> holderBucket = new HashMap<>();
 
     protected ConfigurationAdapter adapter;
     protected BasementConfiguration configuration;
@@ -57,7 +54,7 @@ public abstract class AbstractBasementPlugin implements BasementPlugin, Basement
 
     public void enable() {
         getLogger().info("Loading configuration...");
-        this.adapter = provideConfigurationAdapter("config.yml", true);
+        this.adapter = provideConfigurationAdapter(getConfigDirectory().resolve("config.yml").toFile(), true);
         this.configuration = new BasementConfiguration(this, adapter);
 
         StorageCredentials storageCredentials = configuration.get(ConfigKeys.MYSQL_CREDENTIALS);
@@ -66,9 +63,10 @@ public abstract class AbstractBasementPlugin implements BasementPlugin, Basement
             Connector connector = createConnector(storageCredentials.minIdleConnections(), storageCredentials.maxPoolSize(), "basement");
             connector.connect(storageCredentials);
 
-            holder = getHolder(BasementLib.class, AbstractMariaHolder.class);
-            holder.setConnector(connector);
+            holder = new MariaHolder(connector);
             database = holder.createDatabase(storageCredentials.database()).ifNotExists(true).build().execReturn();
+        } else {
+            getLogger().warn("MySQL is disabled. Some features will not work. It's recommended to enable it.");
         }
 
         RedisCredentials redisCredentials = configuration.get(ConfigKeys.REDIS_CREDENTIALS);
@@ -88,21 +86,28 @@ public abstract class AbstractBasementPlugin implements BasementPlugin, Basement
             try { cerebrumService = remoteService.get(RemoteCerebrumService.class); } catch (Exception e) {
                 getLogger().warn("Cannot load cerebrum service. (Ignore if you are not using Cerebrum)");
             }
+        } else {
+            getLogger().warn("Redis is disabled. Some features will not work. It's recommended to enable it.");
         }
 
         registerListeners();
-
         registerCommands();
 
+        getLogger().info("Registering BasementLib provider (OTU: " + uuid + ")");
         BasementProvider.register(this);
         registerApiOnPlatform(this);
+
+        getLogger().info("BasementLib loaded!");
     }
 
     public void disable() {
+        getLogger().info("Unregistering BasementLib provider (OTU: " + uuid + ")");
         BasementProvider.unregister();
 
         if (holder != null) holder.close();
         if (redisManager != null) redisManager.getRedissonClient().shutdown();
+
+        getLogger().info("BasementLib unloaded!");
     }
 
     @Override
@@ -146,29 +151,30 @@ public abstract class AbstractBasementPlugin implements BasementPlugin, Basement
     }
 
     @Override
+    public @Nullable AbstractMariaDatabase getDatabase(String database) {
+        if (holder == null) throw new IllegalStateException("Database is not enabled.");
+        return holder.useDatabase(database);
+    }
+
+    @Override
+    public void loadDatabase(AbstractMariaDatabase database) {
+        if (holder == null) throw new IllegalStateException("Database is not enabled.");
+        holder.loadDatabase(database);
+    }
+
+    @Override
     public Connector createConnector(int minPoolSize, int maxPoolSize, String poolName) {
         return new MariaConnector(minPoolSize, maxPoolSize, poolName);
     }
 
     @Override
-    public <T extends Holder> T getHolder(Class<?> key, Class<T> type) {
-        Holder holder = holderBucket.get(key);
-        if (holder == null) {
-            try {
-                T instance = type.cast(TypeHolder.TYPES.get(type).getDeclaredConstructor().newInstance());
-                holderBucket.put(key, instance);
-                return instance;
-            } catch (InstantiationException | NoSuchMethodException | IllegalAccessException |
-                     InvocationTargetException e) {
-                e.printStackTrace();
-                return null;
-            }
-        }
-        return type.cast(holder);
+    public @Nullable AbstractMariaHolder getHolder() {
+        if (holder == null) throw new IllegalStateException("Database is not enabled.");
+        return holder;
     }
 
-    public Path resolveConfig(String fileName, boolean create) {
-        Path configFile = getConfigDirectory().resolve(fileName);
+    public Path resolveConfig(File file, boolean create) {
+        Path configFile = file.toPath();
         // if the config doesn't exist, create it based on the template in the resources dir
         if (create && !Files.exists(configFile)) {
             try {
@@ -176,7 +182,7 @@ public abstract class AbstractBasementPlugin implements BasementPlugin, Basement
             } catch (IOException e) {
                 // ignore
             }
-            try (InputStream is = getResourceStream(fileName)) {
+            try (InputStream is = getResourceStream(file.getName())) {
                 Files.copy(is, configFile);
             } catch (IOException e) {
                 throw new RuntimeException(e);
@@ -185,11 +191,7 @@ public abstract class AbstractBasementPlugin implements BasementPlugin, Basement
         return configFile;
     }
 
-    public abstract Path getConfigDirectory();
-
     public abstract PluginLogger provideLogger();
-
-    public abstract ConfigurationAdapter provideConfigurationAdapter(String configName, boolean create);
 
     protected abstract void registerApiOnPlatform(BasementLib basement);
 

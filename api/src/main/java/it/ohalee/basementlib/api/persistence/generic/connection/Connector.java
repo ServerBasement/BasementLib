@@ -13,7 +13,7 @@ import java.sql.PreparedStatement;
 public interface Connector {
 
     /**
-     * try to connect to maria
+     * Try to connect to maria
      * database using the credentials
      *
      * @param credentials the credentials
@@ -23,17 +23,17 @@ public interface Connector {
     void connect(String host);
 
     /**
-     * @param host     connection url
+     * @param host connection url
      * @param username username used for the authentication
-     *                 TYPE LOGIN : USING PASSWORD NO
+     * TYPE LOGIN : USING PASSWORD NO
      */
     void connect(String host, String username);
 
     /**
-     * @param host     connection url
+     * @param host connection url
      * @param username username used for the authentication
      * @param password password used for the authentication
-     *                 TYPE LOGIN : USING PASSWORD YES
+     * TYPE LOGIN : USING PASSWORD YES
      */
     void connect(String host, String username, String password);
 
@@ -45,7 +45,8 @@ public interface Connector {
     void execute(String query);
 
     /**
-     * Get prepared statement for batching operations
+     * Get prepared statement for batching operations<br>
+     * WARNING: the connection must be closed:
      *
      * @param query the query statement batched
      */

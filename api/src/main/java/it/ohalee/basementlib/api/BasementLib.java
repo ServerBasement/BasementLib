@@ -1,8 +1,9 @@
 package it.ohalee.basementlib.api;
 
-import it.ohalee.basementlib.api.persistence.generic.Holder;
 import it.ohalee.basementlib.api.persistence.generic.connection.Connector;
+import it.ohalee.basementlib.api.persistence.maria.queries.builders.database.QueryBuilderCreateDatabase;
 import it.ohalee.basementlib.api.persistence.maria.structure.AbstractMariaDatabase;
+import it.ohalee.basementlib.api.persistence.maria.structure.AbstractMariaHolder;
 import it.ohalee.basementlib.api.redis.RedisManager;
 import it.ohalee.basementlib.api.remote.RemoteCerebrumService;
 import it.ohalee.basementlib.api.remote.RemoteVelocityService;
@@ -56,6 +57,22 @@ public interface BasementLib {
     @Nullable AbstractMariaDatabase getDatabase();
 
     /**
+     * Gets a database by name
+     *
+     * @param database the database name
+     * @return the database
+     */
+    @Nullable AbstractMariaDatabase getDatabase(String database);
+
+    /**
+     * Loads the a database
+     *
+     * @param database the database
+     * @see QueryBuilderCreateDatabase#exec() To create and/or load a database
+     */
+    void loadDatabase(AbstractMariaDatabase database);
+
+    /**
      * Gets a new Connector object
      *
      * @return connector object
@@ -70,6 +87,6 @@ public interface BasementLib {
      * @param <T>  the type
      * @return the holder instance
      */
-    <T extends Holder> T getHolder(Class<?> key, Class<T> type);
+    @Nullable AbstractMariaHolder getHolder();
 
 }

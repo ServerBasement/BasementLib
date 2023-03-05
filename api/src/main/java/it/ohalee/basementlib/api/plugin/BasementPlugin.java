@@ -1,8 +1,10 @@
 package it.ohalee.basementlib.api.plugin;
 
 import it.ohalee.basementlib.api.config.generic.KeyedConfiguration;
+import it.ohalee.basementlib.api.config.generic.adapter.ConfigurationAdapter;
 import it.ohalee.basementlib.api.plugin.logging.PluginLogger;
 
+import java.io.File;
 import java.io.InputStream;
 import java.nio.file.Path;
 
@@ -48,4 +50,11 @@ public interface BasementPlugin {
         return getClass().getClassLoader().getResourceAsStream(path);
     }
 
+    /**
+     * Gets a configuration adapter for the given path
+     *
+     * @param file the file to load
+     * @return the configuration adapter
+     */
+    ConfigurationAdapter provideConfigurationAdapter(File file, boolean create);
 }

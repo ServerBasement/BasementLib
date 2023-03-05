@@ -1,13 +1,12 @@
 package it.ohalee.basementlib.api.bukkit;
 
-import it.ohalee.basementlib.api.BasementLib;
 import it.ohalee.basementlib.api.bukkit.scoreboard.IScoreboardManager;
 import it.ohalee.basementlib.api.bukkit.scoreboard.ScoreboardProvider;
 import it.ohalee.basementlib.api.bukkit.scoreboard.adapter.ScoreboardAdapter;
 import it.ohalee.basementlib.api.server.BukkitServer;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public interface BasementBukkit extends BasementLib {
+public interface BasementBukkit {
 
     /**
      * Gets the {@link JavaPlugin} instance

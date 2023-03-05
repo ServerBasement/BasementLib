@@ -31,6 +31,7 @@ public final class ConfigKeys {
         int keepAliveTime = c.getInteger("data.pool-settings.keepalive-time", 0);
         int connectionTimeout = c.getInteger("data.pool-settings.connection-timeout", 5000);
         return new StorageCredentials(
+                c.getBoolean("data.enabled", true),
                 c.getString("data.address", null),
                 c.getString("data.database", null),
                 c.getString("data.username", null),
