@@ -1,7 +1,7 @@
 package it.ohalee.basementlib.bukkit.commands;
 
-import it.ohalee.basementlib.api.bukkit.BasementBukkit;
 import it.ohalee.basementlib.api.server.BukkitServer;
+import it.ohalee.basementlib.bukkit.BasementBukkitPlugin;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -17,7 +17,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class BasementBukkitCommand implements CommandExecutor {
 
-    private final BasementBukkit basement;
+    private final BasementBukkitPlugin basement;
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -34,6 +34,10 @@ public class BasementBukkitCommand implements CommandExecutor {
         }
 
         if (args[0].equalsIgnoreCase("servers")) {
+            if (basement.getServerManager() == null) {
+                sender.sendMessage(ChatColor.RED + "Server manager is not enabled!");
+                return true;
+            }
             Collection<BukkitServer> serverList = basement.getServerManager().getServers();
             sender.sendMessage(ChatColor.AQUA + "Servers (" + serverList.size() + ")");
 
@@ -43,7 +47,7 @@ public class BasementBukkitCommand implements CommandExecutor {
                 sender.sendMessage(ChatColor.DARK_AQUA + "  " + server.getName() + " (" + server.getOnline() + ") - " + server.getStatus().name());
             }
         } else if (args[0].equalsIgnoreCase("reload")) {
-            basement.reloadConfig();
+            basement.getConfiguration().reload();
             sender.sendMessage(ChatColor.DARK_AQUA + "Config reloaded!");
         } else if (args[0].equalsIgnoreCase("info")) {
             sender.sendMessage(ChatColor.DARK_AQUA + "Server: " + ChatColor.AQUA + basement.getServerID());

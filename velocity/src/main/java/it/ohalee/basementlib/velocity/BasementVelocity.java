@@ -22,6 +22,7 @@ import it.ohalee.basementlib.velocity.listeners.PlayerListener;
 import it.ohalee.basementlib.velocity.redis.handler.BukkitNotifyShutdownHandler;
 import it.ohalee.basementlib.velocity.redis.handler.ServerShutdownHandler;
 import it.ohalee.basementlib.velocity.remote.RemoteVelocityServiceImpl;
+import lombok.AccessLevel;
 import lombok.Getter;
 import org.redisson.api.RRemoteService;
 import org.slf4j.Logger;
@@ -45,6 +46,7 @@ public class BasementVelocity extends AbstractBasementPlugin {
     @Inject
     @DataDirectory
     private Path configDirectory;
+    @Getter(value = AccessLevel.NONE)
     private final Logger logger;
 
     @Inject
