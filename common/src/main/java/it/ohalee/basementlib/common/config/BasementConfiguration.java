@@ -10,9 +10,9 @@
 
 package it.ohalee.basementlib.common.config;
 
-import it.ohalee.basementlib.api.plugin.BasementPlugin;
 import it.ohalee.basementlib.api.config.generic.KeyedConfiguration;
 import it.ohalee.basementlib.api.config.generic.adapter.ConfigurationAdapter;
+import it.ohalee.basementlib.api.plugin.BasementPlugin;
 
 public class BasementConfiguration extends KeyedConfiguration {
     private final BasementPlugin plugin;

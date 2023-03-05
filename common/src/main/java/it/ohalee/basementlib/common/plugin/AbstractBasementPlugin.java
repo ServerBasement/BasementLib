@@ -2,22 +2,22 @@ package it.ohalee.basementlib.common.plugin;
 
 import it.ohalee.basementlib.api.BasementLib;
 import it.ohalee.basementlib.api.BasementProvider;
+import it.ohalee.basementlib.api.config.generic.adapter.ConfigurationAdapter;
 import it.ohalee.basementlib.api.persistence.StorageCredentials;
 import it.ohalee.basementlib.api.persistence.generic.connection.Connector;
 import it.ohalee.basementlib.api.persistence.maria.structure.AbstractMariaDatabase;
 import it.ohalee.basementlib.api.persistence.maria.structure.AbstractMariaHolder;
 import it.ohalee.basementlib.api.plugin.BasementPlugin;
+import it.ohalee.basementlib.api.plugin.logging.PluginLogger;
 import it.ohalee.basementlib.api.redis.RedisCredentials;
 import it.ohalee.basementlib.api.redis.RedisManager;
 import it.ohalee.basementlib.api.remote.RemoteCerebrumService;
 import it.ohalee.basementlib.api.remote.RemoteVelocityService;
 import it.ohalee.basementlib.api.server.ServerManager;
 import it.ohalee.basementlib.common.config.BasementConfiguration;
-import it.ohalee.basementlib.api.config.generic.adapter.ConfigurationAdapter;
 import it.ohalee.basementlib.common.config.ConfigKeys;
 import it.ohalee.basementlib.common.persistence.maria.structure.MariaHolder;
 import it.ohalee.basementlib.common.persistence.maria.structure.column.connector.MariaConnector;
-import it.ohalee.basementlib.api.plugin.logging.PluginLogger;
 import it.ohalee.basementlib.common.redis.DefaultRedisManager;
 import it.ohalee.basementlib.common.server.DefaultServerManager;
 import org.checkerframework.checker.nullness.qual.Nullable;
@@ -33,18 +33,14 @@ import java.util.UUID;
 public abstract class AbstractBasementPlugin implements BasementPlugin, BasementLib {
 
     private static final UUID uuid = UUID.randomUUID();
-
+    protected ConfigurationAdapter adapter;
+    protected BasementConfiguration configuration;
     private @Nullable RedisManager redisManager;
     private @Nullable ServerManager serverManager;
     private @Nullable RemoteVelocityService velocityService;
     private @Nullable RemoteCerebrumService cerebrumService;
-
     private @Nullable AbstractMariaDatabase database;
     private @Nullable AbstractMariaHolder holder;
-
-    protected ConfigurationAdapter adapter;
-    protected BasementConfiguration configuration;
-
     private PluginLogger logger;
 
     public final void load() {
@@ -80,10 +76,14 @@ public abstract class AbstractBasementPlugin implements BasementPlugin, Basement
             getLogger().info("Loading remote services...");
             RRemoteService remoteService = redisManager.getRedissonClient().getRemoteService();
 
-            try { velocityService = remoteService.get(RemoteVelocityService.class); } catch (Exception e) {
+            try {
+                velocityService = remoteService.get(RemoteVelocityService.class);
+            } catch (Exception e) {
                 getLogger().warn("Cannot load velocity service. (Ignore if you are not using BasementLib-Velocity)");
             }
-            try { cerebrumService = remoteService.get(RemoteCerebrumService.class); } catch (Exception e) {
+            try {
+                cerebrumService = remoteService.get(RemoteCerebrumService.class);
+            } catch (Exception e) {
                 getLogger().warn("Cannot load cerebrum service. (Ignore if you are not using Cerebrum)");
             }
         } else {

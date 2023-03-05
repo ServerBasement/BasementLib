@@ -40,14 +40,13 @@ import java.util.concurrent.Executors;
 @Getter
 public class BasementVelocity extends AbstractBasementPlugin {
 
+    @Getter(value = AccessLevel.NONE)
+    private final Logger logger;
     @Inject
     private ProxyServer server;
-
     @Inject
     @DataDirectory
     private Path configDirectory;
-    @Getter(value = AccessLevel.NONE)
-    private final Logger logger;
 
     @Inject
     public BasementVelocity(Logger logger) {

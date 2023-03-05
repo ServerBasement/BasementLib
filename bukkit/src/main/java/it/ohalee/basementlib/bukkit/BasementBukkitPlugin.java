@@ -130,29 +130,14 @@ public class BasementBukkitPlugin extends AbstractBasementPlugin implements Base
         return new BukkitConfigAdapter(this, resolveConfig(file, create).toFile());
     }
 
-    @RequiredArgsConstructor
-    private class ServerInfoRunnable extends BukkitRunnable {
-        private final ServerStatus serverStatus;
-
-        @Override
-        public void run() {
-            server.setWhitelist(Bukkit.hasWhitelist());
-            server.setOnline(Bukkit.getServer().getOnlinePlayers().size());
-            server.setMax(Bukkit.getMaxPlayers());
-            server.setStatus(serverStatus);
-
-            if (getServerManager() != null) getServerManager().addServer(getServerID(), server);
-        }
+    @Override
+    public String getServerID() {
+        return serverID;
     }
 
     @Override
     public void setServerID(String serverID) {
         this.serverID = serverID;
-    }
-
-    @Override
-    public String getServerID() {
-        return serverID;
     }
 
     @Override
@@ -179,6 +164,21 @@ public class BasementBukkitPlugin extends AbstractBasementPlugin implements Base
     public BukkitServer getServer() {
         if (getServerManager() == null) throw new IllegalStateException("Redis is not enabled");
         return getServerManager().getServer(serverID).orElseThrow();
+    }
+
+    @RequiredArgsConstructor
+    private class ServerInfoRunnable extends BukkitRunnable {
+        private final ServerStatus serverStatus;
+
+        @Override
+        public void run() {
+            server.setWhitelist(Bukkit.hasWhitelist());
+            server.setOnline(Bukkit.getServer().getOnlinePlayers().size());
+            server.setMax(Bukkit.getMaxPlayers());
+            server.setStatus(serverStatus);
+
+            if (getServerManager() != null) getServerManager().addServer(getServerID(), server);
+        }
     }
 
 }

@@ -23,17 +23,17 @@ public interface Connector {
     void connect(String host);
 
     /**
-     * @param host connection url
+     * @param host     connection url
      * @param username username used for the authentication
-     * TYPE LOGIN : USING PASSWORD NO
+     *                 TYPE LOGIN : USING PASSWORD NO
      */
     void connect(String host, String username);
 
     /**
-     * @param host connection url
+     * @param host     connection url
      * @param username username used for the authentication
      * @param password password used for the authentication
-     * TYPE LOGIN : USING PASSWORD YES
+     *                 TYPE LOGIN : USING PASSWORD YES
      */
     void connect(String host, String username, String password);
 

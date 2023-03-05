@@ -19,7 +19,5 @@ public class StorageCredentials {
     private final int maxLifetime;
     private final int keepAliveTime;
     private final int connectionTimeout;
-
-
-
+    
 }

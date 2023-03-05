@@ -23,7 +23,8 @@ public class MariaHolder extends AbstractMariaHolder {
     }
 
     public void loadDatabase(AbstractMariaDatabase database) {
-        if (databases.containsKey(database.getName())) throw new IllegalArgumentException("Database " + database.getName() + " already loaded!");
+        if (databases.containsKey(database.getName()))
+            throw new IllegalArgumentException("Database " + database.getName() + " already loaded!");
         databases.put(database.getName(), database);
     }
 
