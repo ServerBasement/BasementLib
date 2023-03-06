@@ -11,7 +11,7 @@ public interface RedisManager {
      *
      * @return the RedissonClient instance
      */
-    RedissonClient getRedissonClient();
+    RedissonClient redissonClient();
 
     /**
      * Register a new listener for a {@link BasementMessage}

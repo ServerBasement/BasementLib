@@ -4,6 +4,7 @@ import it.ohalee.basementlib.api.persistence.generic.connection.Connector;
 import it.ohalee.basementlib.api.persistence.maria.queries.builders.database.QueryBuilderCreateDatabase;
 import it.ohalee.basementlib.api.persistence.maria.structure.AbstractMariaDatabase;
 import it.ohalee.basementlib.api.persistence.maria.structure.AbstractMariaHolder;
+import it.ohalee.basementlib.api.plugin.BasementPlugin;
 import it.ohalee.basementlib.api.redis.RedisManager;
 import it.ohalee.basementlib.api.remote.RemoteCerebrumService;
 import it.ohalee.basementlib.api.remote.RemoteVelocityService;
@@ -19,50 +20,42 @@ public interface BasementLib {
      *
      * @return the instance UUID
      */
-    UUID getUuid();
+    UUID uuid();
+
+    /**
+     * Gets the plugin
+     *
+     * @return the plugin
+     */
+    BasementPlugin plugin();
 
     /**
      * Gets the Redis Manager
      *
      * @return Redis Manager
      */
-    @Nullable RedisManager getRedisManager();
+    @Nullable RedisManager redisManager();
 
     /**
      * Gets the Server Manager
      *
      * @return Server Manager
      */
-    @Nullable ServerManager getServerManager();
+    @Nullable ServerManager serverManager();
 
     /**
      * Gets the remote instance of velocity service
      *
      * @return remote instance of velocity service
      */
-    @Nullable RemoteVelocityService getRemoteVelocityService();
+    @Nullable RemoteVelocityService remoteVelocityService();
 
     /**
      * Gets the remote instance of cerebrum service
      *
      * @return remote instance of cerebrum service
      */
-    @Nullable RemoteCerebrumService getRemoteCerebrumService();
-
-    /**
-     * Gets the default server database
-     *
-     * @return the default maria database
-     */
-    @Nullable AbstractMariaDatabase getDatabase();
-
-    /**
-     * Gets a database by name
-     *
-     * @param database the database name
-     * @return the database
-     */
-    @Nullable AbstractMariaDatabase getDatabase(String database);
+    @Nullable RemoteCerebrumService remoteCerebrumService();
 
     /**
      * Loads the a database
@@ -87,6 +80,21 @@ public interface BasementLib {
      * @param <T>  the type
      * @return the holder instance
      */
-    @Nullable AbstractMariaHolder getHolder();
+    @Nullable AbstractMariaHolder holder();
+
+    /**
+     * Gets the default server database
+     *
+     * @return the default maria database
+     */
+    @Nullable AbstractMariaDatabase database();
+
+    /**
+     * Gets a database by name
+     *
+     * @param database the database name
+     * @return the database
+     */
+    @Nullable AbstractMariaDatabase database(String database);
 
 }

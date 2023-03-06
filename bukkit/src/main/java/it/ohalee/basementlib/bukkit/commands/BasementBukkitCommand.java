@@ -7,6 +7,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabExecutor;
 import org.spigotmc.SpigotConfig;
 
 import java.util.ArrayList;
@@ -15,7 +16,7 @@ import java.util.Comparator;
 import java.util.List;
 
 @RequiredArgsConstructor
-public class BasementBukkitCommand implements CommandExecutor {
+public class BasementBukkitCommand implements TabExecutor {
 
     private final BasementBukkitPlugin basement;
 
@@ -34,11 +35,11 @@ public class BasementBukkitCommand implements CommandExecutor {
         }
 
         if (args[0].equalsIgnoreCase("servers")) {
-            if (basement.getServerManager() == null) {
-                sender.sendMessage(ChatColor.RED + "Server manager is not enabled!");
+            if (basement.serverManager() == null) {
+                sender.sendMessage(ChatColor.RED + "Redis is not enabled or not connected");
                 return true;
             }
-            Collection<BukkitServer> serverList = basement.getServerManager().getServers();
+            Collection<BukkitServer> serverList = basement.serverManager().getServers();
             sender.sendMessage(ChatColor.AQUA + "Servers (" + serverList.size() + ")");
 
             List<BukkitServer> toSort = new ArrayList<>(serverList);
@@ -47,7 +48,7 @@ public class BasementBukkitCommand implements CommandExecutor {
                 sender.sendMessage(ChatColor.DARK_AQUA + "  " + server.getName() + " (" + server.getOnline() + ") - " + server.getStatus().name());
             }
         } else if (args[0].equalsIgnoreCase("reload")) {
-            basement.getConfiguration().reload();
+            basement.configuration().reload();
             sender.sendMessage(ChatColor.DARK_AQUA + "Config reloaded!");
         } else if (args[0].equalsIgnoreCase("info")) {
             sender.sendMessage(ChatColor.DARK_AQUA + "Server: " + ChatColor.AQUA + basement.getServerID());
@@ -57,4 +58,13 @@ public class BasementBukkitCommand implements CommandExecutor {
 
         return true;
     }
+
+    @Override
+    public List<String> onTabComplete(CommandSender commandSender, Command command, String s, String[] strings) {
+        if (strings.length == 1) {
+            return List.of("servers", "reload", "info");
+        }
+        return null;
+    }
+
 }

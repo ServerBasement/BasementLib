@@ -3,7 +3,6 @@ package it.ohalee.basementlib.common.server;
 import it.ohalee.basementlib.api.redis.RedisManager;
 import it.ohalee.basementlib.api.server.BukkitServer;
 import it.ohalee.basementlib.api.server.ServerManager;
-import lombok.Setter;
 import org.redisson.api.RMapCache;
 import org.redisson.api.map.event.EntryCreatedListener;
 import org.redisson.api.map.event.EntryExpiredListener;
@@ -18,15 +17,11 @@ public class DefaultServerManager implements ServerManager {
 
     private final RMapCache<String, BukkitServer> servers;
 
-    @Setter
-    private Consumer<BukkitServer> serverAddConsumer = server -> {
-    };
-    @Setter
-    private Consumer<BukkitServer> serverRemoveConsumer = server -> {
-    };
+    private Consumer<BukkitServer> serverAddConsumer = server -> {};
+    private Consumer<BukkitServer> serverRemoveConsumer = server -> {};
 
     public DefaultServerManager(RedisManager redisManager) {
-        servers = redisManager.getRedissonClient().getMapCache("servers");
+        servers = redisManager.redissonClient().getMapCache("servers");
         servers.addListener((EntryCreatedListener<String, BukkitServer>) event -> onServerAdd(event.getValue()));
         servers.addListener((EntryRemovedListener<String, BukkitServer>) event -> onServerRemove(event.getValue()));
         servers.addListener((EntryExpiredListener<String, BukkitServer>) event -> onServerRemove(event.getValue()));
@@ -98,5 +93,15 @@ public class DefaultServerManager implements ServerManager {
     @Override
     public void onServerRemove(BukkitServer server) {
         serverRemoveConsumer.accept(server);
+    }
+
+    @Override
+    public void setServerAddConsumer(Consumer<BukkitServer> consumer) {
+        this.serverAddConsumer = consumer;
+    }
+
+    @Override
+    public void setServerRemoveConsumer(Consumer<BukkitServer> consumer) {
+        this.serverRemoveConsumer = consumer;
     }
 }

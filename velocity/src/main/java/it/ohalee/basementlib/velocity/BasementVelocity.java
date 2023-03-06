@@ -58,16 +58,16 @@ public class BasementVelocity extends AbstractBasementPlugin {
         load();
         enable();
 
-        if (getRedisManager() != null) {
-            getRedisManager().registerTopicListener(ServerShutdownMessage.TOPIC, new ServerShutdownHandler(server));
-            getRedisManager().registerTopicListener(BukkitNotifyShutdownMessage.TOPIC, new BukkitNotifyShutdownHandler(server));
+        if (redisManager() != null) {
+            redisManager().registerTopicListener(ServerShutdownMessage.TOPIC, new ServerShutdownHandler(server));
+            redisManager().registerTopicListener(BukkitNotifyShutdownMessage.TOPIC, new BukkitNotifyShutdownHandler(server));
 
-            RRemoteService remoteService = getRedisManager().getRedissonClient().getRemoteService();
+            RRemoteService remoteService = redisManager().redissonClient().getRemoteService();
             remoteService.register(RemoteVelocityService.class, new RemoteVelocityServiceImpl(this), 3, Executors.newSingleThreadExecutor());
 
             server.getCommandManager().register(server.getCommandManager().metaBuilder("createserver").aliases("cs").build(), new CreateServerCommand(this));
 
-            getRedisManager().publishMessage(new VelocityNotifyMessage(false));
+            redisManager().publishMessage(new VelocityNotifyMessage(false));
 
             server.getEventManager().register(this, new PlayerListener(this));
         }
@@ -75,12 +75,12 @@ public class BasementVelocity extends AbstractBasementPlugin {
 
     @Subscribe
     public void onProxyShutdown(ProxyShutdownEvent event) {
-        if (getRedisManager() != null) getRedisManager().publishMessage(new VelocityNotifyMessage(true));
+        if (redisManager() != null) redisManager().publishMessage(new VelocityNotifyMessage(true));
         disable();
     }
 
     @Override
-    public Path getDataDirectory() {
+    public Path dataDirectory() {
         return this.configDirectory.toAbsolutePath();
     }
 

@@ -15,8 +15,7 @@ public class BukkitNotifyShutdownHandler implements BasementMessageHandler<Bukki
 
     @Override
     public void execute(BukkitNotifyShutdownMessage message) {
-        Optional<RegisteredServer> optionalRegisteredServer = server.getServer(message.getServerId());
-        optionalRegisteredServer.ifPresent(registeredServer -> server.unregisterServer(registeredServer.getServerInfo()));
+        server.getServer(message.getServerId()).ifPresent(registeredServer -> server.unregisterServer(registeredServer.getServerInfo()));
     }
 
     @Override

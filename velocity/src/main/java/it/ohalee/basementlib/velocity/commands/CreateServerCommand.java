@@ -17,8 +17,8 @@ public class CreateServerCommand implements SimpleCommand {
             invocation.source().sendMessage(Component.text("/createserver <server-name>", NamedTextColor.YELLOW));
             return;
         }
-        if (velocity.getRemoteCerebrumService() != null)
-            velocity.getRemoteCerebrumService().createServer(invocation.arguments()[0]);
+        if (velocity.remoteCerebrumService() != null)
+            velocity.remoteCerebrumService().createServer(invocation.arguments()[0]);
         else {
             invocation.source().sendMessage(Component.text("Cerebrum is not connected!", NamedTextColor.RED));
         }

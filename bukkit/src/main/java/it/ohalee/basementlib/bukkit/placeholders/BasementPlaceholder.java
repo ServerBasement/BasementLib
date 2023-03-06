@@ -8,11 +8,9 @@ import org.jetbrains.annotations.NotNull;
 public class BasementPlaceholder extends PlaceholderExpansion {
 
     private final BasementLib basement;
-    private final int counterLength;
 
     public BasementPlaceholder(BasementLib basement) {
         this.basement = basement;
-        counterLength = "counter_".length();
     }
 
     @Override
@@ -39,7 +37,8 @@ public class BasementPlaceholder extends PlaceholderExpansion {
     public String onRequest(OfflinePlayer player, @NotNull String params) {
         //Usage: %basement_counter_SERVER%
         if (params.startsWith("counter_")) {
-            return Integer.toString(basement.getServerManager().getOnlinePlayers(params.substring(counterLength)));
+            if (basement.serverManager() == null) return "REDIS NOT CONNECTED OR NOT ENABLED";
+            return Integer.toString(basement.serverManager().getOnlinePlayers(params.replaceFirst("counter_", "")));
         }
         return null;
     }

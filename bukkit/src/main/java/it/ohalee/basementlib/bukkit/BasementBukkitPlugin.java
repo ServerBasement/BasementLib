@@ -3,6 +3,8 @@ package it.ohalee.basementlib.bukkit;
 import it.ohalee.basementlib.api.BasementLib;
 import it.ohalee.basementlib.api.bukkit.BasementBukkit;
 import it.ohalee.basementlib.api.bukkit.chat.Colorizer;
+import it.ohalee.basementlib.api.bukkit.events.BasementNewServerFound;
+import it.ohalee.basementlib.api.bukkit.events.BasementServerRemoved;
 import it.ohalee.basementlib.api.bukkit.scoreboard.ScoreboardProvider;
 import it.ohalee.basementlib.api.bukkit.scoreboard.ScoreboardUtils;
 import it.ohalee.basementlib.api.bukkit.scoreboard.adapter.ScoreboardAdapter;
@@ -28,6 +30,7 @@ import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
+import org.checkerframework.checker.nullness.qual.Nullable;
 import org.redisson.remote.RemoteServiceAckTimeoutException;
 
 import java.io.File;
@@ -38,8 +41,8 @@ public class BasementBukkitPlugin extends AbstractBasementPlugin implements Base
     private final JavaPlugin plugin;
 
     private String serverID = "unknown";
-    private BukkitServer server;
-    private BukkitTask task;
+    private @Nullable BukkitServer server;
+    private @Nullable BukkitTask task;
 
     private ScoreboardAdapter scoreboardAdapter;
     private ScoreboardManager scoreboardManager;
@@ -52,15 +55,20 @@ public class BasementBukkitPlugin extends AbstractBasementPlugin implements Base
     public void enable() {
         super.enable();
 
-        if (getRedisManager() == null || getRemoteCerebrumService() == null)
+        if (redisManager() == null || remoteCerebrumService() == null)
             serverID = configuration.get(ConfigKeys.SERVER);
 
-        server = new BukkitServer(getServerID());
-        task = new ServerInfoRunnable(ServerStatus.OPEN).runTaskTimerAsynchronously(plugin, 10L, 20L);
+        if (serverManager() != null) {
+            server = new BukkitServer(getServerID());
+            task = new ServerInfoRunnable(ServerStatus.OPEN).runTaskTimerAsynchronously(plugin, 10L, 20L);
 
-        if (getRemoteVelocityService() != null) {
+            serverManager().setServerAddConsumer(server -> Bukkit.getPluginManager().callEvent(new BasementNewServerFound(server)));
+            serverManager().setServerRemoveConsumer(server -> Bukkit.getPluginManager().callEvent(new BasementServerRemoved(server)));
+        }
+
+        if (remoteVelocityService() != null) {
             try {
-                getRemoteVelocityService().registerServer(getServerID(), plugin.getServer().getPort());
+                remoteVelocityService().registerServer(getServerID(), plugin.getServer().getPort());
             } catch (RemoteServiceAckTimeoutException e) {
                 plugin.getLogger().severe("Velocity is offline, server not registered");
             }
@@ -81,9 +89,9 @@ public class BasementBukkitPlugin extends AbstractBasementPlugin implements Base
             }
         }
 
-        if (getRedisManager() != null) {
-            getRedisManager().registerTopicListener(VelocityNotifyMessage.TOPIC, new VelocityNotifyHandler(this));
-            getRedisManager().registerTopicListener(ServerShutdownMessage.TOPIC, new ServerShutdownHandler(this));
+        if (redisManager() != null) {
+            redisManager().registerTopicListener(VelocityNotifyMessage.TOPIC, new VelocityNotifyHandler(this));
+            redisManager().registerTopicListener(ServerShutdownMessage.TOPIC, new ServerShutdownHandler(this));
         }
 
         this.scoreboardAdapter = ScoreboardAdapter.builder(plugin, scoreboardUtils).build();
@@ -94,8 +102,8 @@ public class BasementBukkitPlugin extends AbstractBasementPlugin implements Base
     @Override
     public void disable() {
         if (task != null) task.cancel();
-        if (getRedisManager() != null) getRedisManager().publishMessage(new BukkitNotifyShutdownMessage(getServerID()));
-        if (getServerManager() != null) getServerManager().removeServer(getServerID());
+        if (redisManager() != null) redisManager().publishMessage(new BukkitNotifyShutdownMessage(getServerID()));
+        if (serverManager() != null) serverManager().removeServer(getServerID());
 
         super.disable();
     }
@@ -121,7 +129,7 @@ public class BasementBukkitPlugin extends AbstractBasementPlugin implements Base
     }
 
     @Override
-    public Path getDataDirectory() {
+    public Path dataDirectory() {
         return this.plugin.getDataFolder().toPath().toAbsolutePath();
     }
 
@@ -162,8 +170,8 @@ public class BasementBukkitPlugin extends AbstractBasementPlugin implements Base
 
     @Override
     public BukkitServer getServer() {
-        if (getServerManager() == null) throw new IllegalStateException("Redis is not enabled");
-        return getServerManager().getServer(serverID).orElseThrow();
+        if (serverManager() == null) throw new IllegalStateException("Redis is not enabled");
+        return serverManager().getServer(serverID).orElseThrow();
     }
 
     @RequiredArgsConstructor
@@ -177,7 +185,7 @@ public class BasementBukkitPlugin extends AbstractBasementPlugin implements Base
             server.setMax(Bukkit.getMaxPlayers());
             server.setStatus(serverStatus);
 
-            if (getServerManager() != null) getServerManager().addServer(getServerID(), server);
+            serverManager().addServer(getServerID(), server);
         }
     }
 

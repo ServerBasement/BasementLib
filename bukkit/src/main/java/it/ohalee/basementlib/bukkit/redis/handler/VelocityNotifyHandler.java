@@ -4,6 +4,7 @@ import it.ohalee.basementlib.api.redis.messages.handler.BasementMessageHandler;
 import it.ohalee.basementlib.api.redis.messages.implementation.VelocityNotifyMessage;
 import it.ohalee.basementlib.bukkit.BasementBukkitPlugin;
 import lombok.RequiredArgsConstructor;
+import org.bukkit.Bukkit;
 
 @RequiredArgsConstructor
 public class VelocityNotifyHandler implements BasementMessageHandler<VelocityNotifyMessage> {
@@ -13,8 +14,8 @@ public class VelocityNotifyHandler implements BasementMessageHandler<VelocityNot
     @Override
     public void execute(VelocityNotifyMessage message) {
         if (message.isShutdown()) return;
-        if (basement.getRemoteVelocityService() != null)
-            basement.getRemoteVelocityService().registerServer(basement.getServerID(), basement.getPlugin().getServer().getPort());
+        if (basement.remoteVelocityService() != null)
+            basement.remoteVelocityService().registerServer(basement.getServerID(), Bukkit.getServer().getPort());
     }
 
     @Override

@@ -22,7 +22,7 @@ public class ScoreboardManager implements Listener, IScoreboardManager {
     private final ScoreboardProvider provider;
     private final int delay;
 
-    private final Map<UUID, Scoreboard> scoreboars;
+    private final Map<UUID, Scoreboard> scoreboards = new ConcurrentHashMap<>();
     private final BukkitRunnable taskRunnable;
     private BukkitTask updateTask;
 
@@ -31,12 +31,10 @@ public class ScoreboardManager implements Listener, IScoreboardManager {
         this.provider = provider;
         this.delay = delay;
 
-        this.scoreboars = new ConcurrentHashMap<>();
-
         taskRunnable = new BukkitRunnable() {
             @Override
             public void run() {
-                for (Scoreboard scoreboard : scoreboars.values()) {
+                for (Scoreboard scoreboard : scoreboards.values()) {
                     if (scoreboard.getViewer() == null || !scoreboard.getViewer().isOnline()) return;
                     Player player = scoreboard.getViewer();
                     List<ScoreboardLine> lines = provider.getLines(player);
@@ -66,17 +64,17 @@ public class ScoreboardManager implements Listener, IScoreboardManager {
     }
 
     private void setup(Player player) {
-        Optional.ofNullable(scoreboars.remove(player.getUniqueId())).ifPresent(Scoreboard::destroy);
+        Optional.ofNullable(scoreboards.remove(player.getUniqueId())).ifPresent(Scoreboard::destroy);
 
-        scoreboars.put(player.getUniqueId(), provider.show(player));
+        scoreboards.put(player.getUniqueId(), provider.show(player));
     }
 
     private void remove(Player player) {
-        Optional.ofNullable(scoreboars.remove(player.getUniqueId())).ifPresent(Scoreboard::destroy);
+        Optional.ofNullable(scoreboards.remove(player.getUniqueId())).ifPresent(Scoreboard::destroy);
     }
 
-    public Map<UUID, Scoreboard> getScoreboars() {
-        return Collections.unmodifiableMap(scoreboars);
+    public Map<UUID, Scoreboard> getScoreboards() {
+        return Collections.unmodifiableMap(scoreboards);
     }
 
     @EventHandler
@@ -96,7 +94,7 @@ public class ScoreboardManager implements Listener, IScoreboardManager {
     public void stop() {
         updateTask.cancel();
         plugin.getServer().getOnlinePlayers().forEach(this::remove);
-        scoreboars.clear();
+        scoreboards.clear();
     }
 
     public void forceUpdate() {

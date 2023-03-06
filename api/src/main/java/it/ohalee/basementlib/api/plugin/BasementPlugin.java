@@ -15,29 +15,29 @@ public interface BasementPlugin {
      *
      * @return the plugin's logger
      */
-    PluginLogger getLogger();
+    PluginLogger logger();
 
     /**
      * Gets the configuration's name.
      *
      * @return the configuration's name
      */
-    KeyedConfiguration getConfiguration();
+    KeyedConfiguration configuration();
 
     /**
      * Gets the plugins main data storage directory
      *
      * @return the platforms data folder
      */
-    Path getDataDirectory();
+    Path dataDirectory();
 
     /**
      * Gets the plugins configuration directory
      *
      * @return the config directory
      */
-    default Path getConfigDirectory() {
-        return getDataDirectory();
+    default Path configDirectory() {
+        return dataDirectory();
     }
 
     /**
@@ -46,7 +46,7 @@ public interface BasementPlugin {
      * @param path the path of the file
      * @return the file as an input stream
      */
-    default InputStream getResourceStream(String path) {
+    default InputStream resourceStream(String path) {
         return getClass().getClassLoader().getResourceAsStream(path);
     }
 

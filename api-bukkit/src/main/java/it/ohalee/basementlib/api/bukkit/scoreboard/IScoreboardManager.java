@@ -11,7 +11,7 @@ public interface IScoreboardManager {
 
     void stop();
 
-    Map<UUID, Scoreboard> getScoreboars();
+    Map<UUID, Scoreboard> getScoreboards();
 
     void forceUpdate();
 }

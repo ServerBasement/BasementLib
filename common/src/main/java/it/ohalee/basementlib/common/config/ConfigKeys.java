@@ -22,7 +22,7 @@ import static it.ohalee.basementlib.api.config.generic.key.ConfigKeyFactory.*;
 
 public final class ConfigKeys {
 
-    public static final ConfigKey<String> SERVER = lowercaseStringKey("server", "global");
+    public static final ConfigKey<String> SERVER = lowercaseStringKey("server", "unknown");
 
     public static final ConfigKey<StorageCredentials> MYSQL_CREDENTIALS = notReloadable(key(c -> {
         int maxPoolSize = c.getInteger("data.pool-settings.maximum-pool-size", c.getInteger("data.pool-size", 10));

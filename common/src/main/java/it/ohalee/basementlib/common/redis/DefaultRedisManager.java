@@ -61,7 +61,7 @@ public class DefaultRedisManager implements RedisManager {
     }
 
     @Override
-    public RedissonClient getRedissonClient() {
+    public RedissonClient redissonClient() {
         return redissonClient;
     }
 
