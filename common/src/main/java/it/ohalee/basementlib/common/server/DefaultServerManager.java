@@ -17,8 +17,10 @@ public class DefaultServerManager implements ServerManager {
 
     private final RMapCache<String, BukkitServer> servers;
 
-    private Consumer<BukkitServer> serverAddConsumer = server -> {};
-    private Consumer<BukkitServer> serverRemoveConsumer = server -> {};
+    private Consumer<BukkitServer> serverAddConsumer = server -> {
+    };
+    private Consumer<BukkitServer> serverRemoveConsumer = server -> {
+    };
 
     public DefaultServerManager(RedisManager redisManager) {
         servers = redisManager.redissonClient().getMapCache("servers");

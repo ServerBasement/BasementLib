@@ -8,9 +8,9 @@ include(
         'velocity',
         'bukkit:nms',
         'bukkit:nms:V1_8_R3',
-        'bukkit:nms:V1_19_R1'
+        //'bukkit:nms:V1_19_R1'
 )
 findProject(':bukkit:nms')?.name = 'nms'
 findProject(':bukkit:nms:V1_8_R3')?.name = 'V1_8_R3'
-findProject(':bukkit:nms:V1_19_R1')?.name = 'V1_19_R1'
+//findProject(':bukkit:nms:V1_19_R1')?.name = 'V1_19_R1'
 

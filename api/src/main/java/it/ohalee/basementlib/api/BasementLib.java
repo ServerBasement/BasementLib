@@ -75,9 +75,6 @@ public interface BasementLib {
     /**
      * Gets a holder instance
      *
-     * @param key  the key
-     * @param type the type
-     * @param <T>  the type
      * @return the holder instance
      */
     @Nullable AbstractMariaHolder holder();

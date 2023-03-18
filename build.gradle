@@ -10,8 +10,8 @@ subprojects {
     group = 'it.ohalee.basementlib'
     version = '1.0.0'
 
-    sourceCompatibility = 1.17
-    targetCompatibility = 1.17
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
 
     tasks.withType(JavaCompile).tap {
         configureEach {

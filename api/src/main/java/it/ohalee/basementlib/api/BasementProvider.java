@@ -42,14 +42,12 @@ public final class BasementProvider {
      * Exception thrown when the API is requested before it has been loaded.
      */
     private static final class NotLoadedException extends IllegalStateException {
-        private static final String MESSAGE = """
-                The Basement API isn't loaded yet!
-                This could be because:
-                  a) the Basement plugin is not installed or it failed to enable
-                  b) the plugin in the stacktrace does not declare a dependency on Basement
-                  c) the plugin in the stacktrace is retrieving the API before the plugin 'enable' phase
-                     (call the #get method in onEnable, not the constructor!)
-                """;
+        private static final String MESSAGE = "The Basement API isn't loaded yet!\n" +
+                "This could be because:\n" +
+                "  a) the Basement plugin is not installed or it failed to enable\n" +
+                "  b) the plugin in the stacktrace does not declare a dependency on Basement\n" +
+                "  c) the plugin in the stacktrace is retrieving the API before the plugin 'enable' phase\n" +
+                "     (call the #get method in onEnable, not the constructor!)";
 
         NotLoadedException() {
             super(MESSAGE);

@@ -1,12 +1,9 @@
 package it.ohalee.basementlib.velocity.redis.handler;
 
 import com.velocitypowered.api.proxy.ProxyServer;
-import com.velocitypowered.api.proxy.server.RegisteredServer;
 import it.ohalee.basementlib.api.redis.messages.handler.BasementMessageHandler;
 import it.ohalee.basementlib.api.redis.messages.implementation.BukkitNotifyShutdownMessage;
 import lombok.RequiredArgsConstructor;
-
-import java.util.Optional;
 
 @RequiredArgsConstructor
 public class BukkitNotifyShutdownHandler implements BasementMessageHandler<BukkitNotifyShutdownMessage> {

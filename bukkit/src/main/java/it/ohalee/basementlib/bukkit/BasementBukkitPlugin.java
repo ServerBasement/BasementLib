@@ -16,7 +16,6 @@ import it.ohalee.basementlib.api.redis.messages.implementation.VelocityNotifyMes
 import it.ohalee.basementlib.api.server.BukkitServer;
 import it.ohalee.basementlib.api.server.ServerStatus;
 import it.ohalee.basementlib.bukkit.commands.BasementBukkitCommand;
-import it.ohalee.basementlib.bukkit.nms.v1_19_R1.inventory.InventoryFixer;
 import it.ohalee.basementlib.bukkit.placeholders.BasementPlaceholder;
 import it.ohalee.basementlib.bukkit.redis.handler.ServerShutdownHandler;
 import it.ohalee.basementlib.bukkit.redis.handler.VelocityNotifyHandler;
@@ -75,18 +74,16 @@ public class BasementBukkitPlugin extends AbstractBasementPlugin implements Base
         }
 
         String version = plugin.getServer().getClass().getPackage().getName().split("\\.")[3];
-        ScoreboardUtils scoreboardUtils = null;
+        ScoreboardUtils scoreboardUtils;
 
-        switch (version) {
-            case "v1_8_R3" -> {
-                scoreboardUtils = new it.ohalee.basementlib.bukkit.nms.v1_8_R3.scoreboard.ScoreboardUtils();
-                Colorizer.setAdapter(new it.ohalee.basementlib.bukkit.nms.v1_8_R3.chat.ColorizerNMS());
-            }
-            case "v1_19_R1" -> {
-                scoreboardUtils = new it.ohalee.basementlib.bukkit.nms.v1_19_R1.scoreboard.ScoreboardUtils();
-                Colorizer.setAdapter(new it.ohalee.basementlib.bukkit.nms.v1_19_R1.chat.ColorizerNMS());
-                new InventoryFixer(plugin);
-            }
+        try {
+            Class<?> scoreboardAdapter = Class.forName("it.ohalee.basementlib.bukkit.nms." + version + ".scoreboard.ScoreboardUtils");
+            scoreboardUtils = (ScoreboardUtils) scoreboardAdapter.newInstance();
+
+            Class<?> colorAdapter = Class.forName("it.ohalee.basementlib.bukkit.nms." + version + ".chat.ColorizerNMS");
+            Colorizer.setAdapter((Colorizer.ColorAdapter) colorAdapter.newInstance());
+        } catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
         }
 
         if (redisManager() != null) {
@@ -171,7 +168,7 @@ public class BasementBukkitPlugin extends AbstractBasementPlugin implements Base
     @Override
     public BukkitServer getServer() {
         if (serverManager() == null) throw new IllegalStateException("Redis is not enabled");
-        return serverManager().getServer(serverID).orElseThrow();
+        return serverManager().getServer(serverID).orElseThrow(RuntimeException::new);
     }
 
     @RequiredArgsConstructor

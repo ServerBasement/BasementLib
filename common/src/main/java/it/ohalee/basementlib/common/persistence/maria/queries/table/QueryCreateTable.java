@@ -14,6 +14,7 @@ import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 import java.util.function.UnaryOperator;
+import java.util.stream.Collectors;
 
 public class QueryCreateTable extends MariaQuery implements QueryBuilderCreateTable {
 
@@ -181,7 +182,7 @@ public class QueryCreateTable extends MariaQuery implements QueryBuilderCreateTa
 
         temp = new MariaTable(database, tableName);
 
-        List<String> fk = foreignKeys.stream().map(ForeignKeyDefinition::getName).toList();
+        List<String> fk = foreignKeys.stream().map(ForeignKeyDefinition::getName).collect(Collectors.toList());
 
         columns.forEach(column -> {
             temp.addColumn(column);

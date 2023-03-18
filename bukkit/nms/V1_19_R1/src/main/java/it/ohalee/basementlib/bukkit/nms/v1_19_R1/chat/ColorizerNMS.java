@@ -14,8 +14,7 @@ public class ColorizerNMS implements Colorizer.ColorAdapter {
     public String translateHex(String msg) {
         Preconditions.checkNotNull(msg, "Cannot translate null text");
 
-        msg = msg.replace("&g", "#2196F3")
-                .replace("&h", "#2962FF");
+        msg = msg.replace("&g", "#2196F3").replace("&h", "#2962FF");
 
         Matcher matcher = hexColorPattern.matcher(msg);
         while (matcher.find()) {

@@ -2,6 +2,7 @@ package it.ohalee.basementlib.api.config.generic.key;
 
 import it.ohalee.basementlib.api.config.generic.adapter.ConfigurationAdapter;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
@@ -10,7 +11,7 @@ public interface ConfigKeyFactory<T> {
     ConfigKeyFactory<Boolean> BOOLEAN = ConfigurationAdapter::getBoolean;
     ConfigKeyFactory<String> STRING = ConfigurationAdapter::getString;
     ConfigKeyFactory<String> LOWERCASE_STRING = (adapter, path, def) -> adapter.getString(path, def).toLowerCase();
-    ConfigKeyFactory<Map<String, String>> STRING_MAP = (config, path, def) -> config.getStringMap(path, Map.of());
+    ConfigKeyFactory<Map<String, String>> STRING_MAP = (config, path, def) -> config.getStringMap(path, new HashMap<>());
 
     static <T> SimpleConfigKey<T> key(Function<ConfigurationAdapter, T> function) {
         return new SimpleConfigKey<>(function);

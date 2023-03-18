@@ -17,23 +17,27 @@ public class QueryDataImpl implements QueryData {
     private int index = -1;
 
     public QueryDataImpl(ResultSet resultSet) {
-        try (resultSet) {
-            Map<String, Object> rowByName;
-            Map<Integer, Object> rowById;
+        try {
+            try {
+                Map<String, Object> rowByName;
+                Map<Integer, Object> rowById;
 
-            ResultSetMetaData metaData = resultSet.getMetaData();
-            int columnCount = metaData.getColumnCount();
+                ResultSetMetaData metaData = resultSet.getMetaData();
+                int columnCount = metaData.getColumnCount();
 
-            while (resultSet.next()) {
-                rowByName = new HashMap<>();
-                rowById = new HashMap<>();
-                for (int i = 1; i <= columnCount; i++) {
-                    Object element = resultSet.getObject(i);
-                    rowByName.put(metaData.getColumnName(i), element);
-                    rowById.put(i, element);
+                while (resultSet.next()) {
+                    rowByName = new HashMap<>();
+                    rowById = new HashMap<>();
+                    for (int i = 1; i <= columnCount; i++) {
+                        Object element = resultSet.getObject(i);
+                        rowByName.put(metaData.getColumnName(i), element);
+                        rowById.put(i, element);
+                    }
+                    dataByName.add(rowByName);
+                    dataById.add(rowById);
                 }
-                dataByName.add(rowByName);
-                dataById.add(rowById);
+            } finally {
+                resultSet.close();
             }
         } catch (SQLException e) {
             e.printStackTrace();

@@ -16,6 +16,7 @@ import it.ohalee.basementlib.api.config.generic.key.SimpleConfigKey;
 import it.ohalee.basementlib.api.persistence.StorageCredentials;
 import it.ohalee.basementlib.api.redis.RedisCredentials;
 
+import java.util.Collections;
 import java.util.List;
 
 import static it.ohalee.basementlib.api.config.generic.key.ConfigKeyFactory.*;
@@ -25,17 +26,17 @@ public final class ConfigKeys {
     public static final ConfigKey<String> SERVER = lowercaseStringKey("server", "unknown");
 
     public static final ConfigKey<StorageCredentials> MYSQL_CREDENTIALS = notReloadable(key(c -> {
-        int maxPoolSize = c.getInteger("data.pool-settings.maximum-pool-size", c.getInteger("data.pool-size", 10));
-        int minIdle = c.getInteger("data.pool-settings.minimum-idle", maxPoolSize);
-        int maxLifetime = c.getInteger("data.pool-settings.maximum-lifetime", 1800000);
-        int keepAliveTime = c.getInteger("data.pool-settings.keepalive-time", 0);
-        int connectionTimeout = c.getInteger("data.pool-settings.connection-timeout", 5000);
+        int maxPoolSize = c.getInteger("mysql.pool-settings.maximum-pool-size", c.getInteger("mysql.pool-size", 10));
+        int minIdle = c.getInteger("mysql.pool-settings.minimum-idle", maxPoolSize);
+        int maxLifetime = c.getInteger("mysql.pool-settings.maximum-lifetime", 1800000);
+        int keepAliveTime = c.getInteger("mysql.pool-settings.keepalive-time", 0);
+        int connectionTimeout = c.getInteger("mysql.pool-settings.connection-timeout", 5000);
         return new StorageCredentials(
-                c.getBoolean("data.enabled", true),
-                c.getString("data.address", null),
-                c.getString("data.database", null),
-                c.getString("data.username", null),
-                c.getString("data.password", null),
+                c.getBoolean("mysql.enabled", true),
+                c.getString("mysql.address", null),
+                c.getString("mysql.database", null),
+                c.getString("mysql.username", null),
+                c.getString("mysql.password", null),
                 maxPoolSize, minIdle, maxLifetime, keepAliveTime, connectionTimeout
         );
     }));
@@ -43,7 +44,7 @@ public final class ConfigKeys {
     public static final ConfigKey<RedisCredentials> REDIS_CREDENTIALS = notReloadable(key(c -> {
         return new RedisCredentials(
                 c.getBoolean("redis.enabled", true),
-                c.getStringList("redis.addresses", List.of()),
+                c.getStringList("redis.addresses", Collections.emptyList()),
                 c.getString("redis.username", null),
                 c.getString("redis.password", null),
                 c.getInteger("redis.netty-threads", 32),

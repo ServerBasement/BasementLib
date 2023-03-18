@@ -44,8 +44,9 @@ public abstract class AbstractBasementPlugin implements BasementPlugin, Basement
     private PluginLogger logger;
 
     public final void load() {
-        logger().info("Loading BasementLib...");
         logger = provideLogger();
+
+        logger().info("Loading BasementLib...");
     }
 
     public void enable() {

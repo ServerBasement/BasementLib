@@ -5,15 +5,10 @@ import it.ohalee.basementlib.bukkit.BasementBukkitPlugin;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
-import org.spigotmc.SpigotConfig;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 @RequiredArgsConstructor
 public class BasementBukkitCommand implements TabExecutor {
@@ -23,7 +18,7 @@ public class BasementBukkitCommand implements TabExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!sender.hasPermission("basement.command.basement")) {
-            sender.sendMessage(SpigotConfig.unknownCommandMessage);
+            sender.sendMessage(ChatColor.RED + "You don't have permission to use this command");
             return true;
         }
 
@@ -62,7 +57,7 @@ public class BasementBukkitCommand implements TabExecutor {
     @Override
     public List<String> onTabComplete(CommandSender commandSender, Command command, String s, String[] strings) {
         if (strings.length == 1) {
-            return List.of("servers", "reload", "info");
+            return Arrays.asList("servers", "reload", "info");
         }
         return null;
     }

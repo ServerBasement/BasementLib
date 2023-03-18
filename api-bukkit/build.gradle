@@ -5,5 +5,6 @@ plugins {
 dependencies {
     api(project(':api'))
 
-    compileOnly 'app.ashcon:sportpaper:1.8.8'
+    //compileOnly 'app.ashcon:sportpaper:1.8.8'
+    compileOnly 'com.destroystokyo.paper:paper-api:1.15.2-R0.1-SNAPSHOT'
 }
