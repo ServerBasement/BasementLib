@@ -5,6 +5,7 @@ plugins {
 
 subprojects {
     apply plugin: 'java'
+    apply plugin: 'java-library'
     apply plugin: 'maven-publish'
 
     group = 'it.ohalee.basementlib'
@@ -19,7 +20,9 @@ subprojects {
         }
     }
 
-    project.ext.fullVersion = version
+    project.ext.majorVersion = '1'
+    project.ext.minorVersion = '0'
+    project.ext.fullVersion = project.ext.majorVersion + '.' + project.ext.minorVersion
 
     repositories {
         mavenCentral()
@@ -37,13 +40,5 @@ subprojects {
 
         testCompileOnly 'org.projectlombok:lombok:1.18.24'
         testAnnotationProcessor 'org.projectlombok:lombok:1.18.24'
-    }
-
-    publishing {
-        publications {
-            shadow(MavenPublication) {
-                from components.java
-            }
-        }
     }
 }

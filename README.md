@@ -174,6 +174,20 @@ You can create another pool with the following method in case you need it:
 Connector connector = basementLib.createConnector(minPool, maxPool, poolName)
 ```
 
+- Batch queries:
+    ```java
+    try (PreparedStatement prepared = someUpdate.patternClone().build().asPrepared()) {
+        ...
+
+        prepared.executeBatch();
+  
+        // Close connection
+        prepared.getConnection().close();
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }  
+  ```
+
 #### Redis
 You can send messages via redis and receive them anywhere:
 
@@ -454,33 +468,47 @@ Nothing special for now
 ## Usage/Examples
 
 ### Random query exaple
-```java
-private final QueryBuilderUpdate queryUpdateUserData;
+- Create the query
+  ```java
+  private final QueryBuilderUpdate queryUpdateUserData;
+  
+  public UserManager() {
+      queryUpdateUserData = basement.database().update().table("players")
+          .setNQ("xp", "?")
+          .setNQ("level", "?").setNQ("coins", "?")
+          .setNQ("language", "?")
+          .where(WhereBuilder.builder().equalsNQ("uuid", "?").close());
+  }
+  ```
+- Sync
+  ```java
+    private void save(UserData data) {
+        queryUpdateUserData.patternClone().clearSet()
+            .setNQ("xp", data.getXp()).setNQ("level", data.getNetworkLevel())
+            .setNQ("coins", data.getNetworkCoins())
+            .where(WhereBuilder.builder().equals("uuid", data.getUuid()).close())
+            .build().exec();
+    }
+  ```
 
-public UserManager() {
-    queryUpdateUserData = velocity.getBasement().getDatabase().update().table("players")
-                .setNQ("xp", "?").setNQ("level", "?").setNQ("coins", "?")
-                .setNQ("gems", "?").setNQ("language", "?")
-                .where(WhereBuilder.builder().equalsNQ("uuid", "?").close());
-}
-
-private void save(UserData data) {
-    queryUpdateUserData.patternClone().clearSet()
-                .setNQ("xp", data.getXp()).setNQ("level", data.getNetworkLevel())
-                .setNQ("coins", data.getNetworkCoins())
-                .setNQ("gems", data.getGems()).set("language", data.getLanguage())
-                .where(WhereBuilder.builder().equals("uuid", data.getUuid()).close())
-                .build().exec();
-}
-```
+- Async
+  ```java
+  private CompletableFuture<QueryBuilderUpdate> saveAsync(UserData data) {
+      return queryUpdateUserData.patternClone().clearSet()
+          .setNQ("xp", data.getXp()).setNQ("level", data.getNetworkLevel())
+          .setNQ("coins", data.getNetworkCoins())
+          .where(WhereBuilder.builder().equals("uuid", data.getUuid()).close())
+          .build().execAsync();
+  }
+  ```
 
 ### Random redisson example
 
 ```java
 protected final RSetCache<Data> data;
 
-public ClickHandler() {
-    data = redisson.getSetCache("some_data");
+public SomeClass() {
+    data = basement.redisManager().redissonClient().getSetCache("some_data");
 }
 
 public Optional<Data> getData(UUID uuid) {

@@ -1,6 +1,4 @@
-plugins {
-    id("java-library")
-}
+project.version = '1.0'
 
 repositories {
     maven { url = 'https://repo.velocitypowered.com/releases/' }
