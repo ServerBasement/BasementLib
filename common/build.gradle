@@ -5,8 +5,8 @@ test {
 }
 
 dependencies {
-
     api project(':api')
+
     api 'org.checkerframework:checker-qual:3.22.1'
 
     compileOnly 'org.projectlombok:lombok:1.18.24'

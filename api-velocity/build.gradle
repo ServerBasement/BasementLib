@@ -5,10 +5,80 @@ repositories {
 }
 
 dependencies {
-    api(project(':api'))
+    api project(':api')
 
     compileOnly 'com.velocitypowered:velocity-brigadier:1.0.0-20210613.082804-10'
 
     compileOnly 'com.velocitypowered:velocity-api:3.1.0'
     annotationProcessor 'com.velocitypowered:velocity-api:3.1.0'
+}
+
+if (project.hasProperty('generateDocs') && project.hasProperty('gpr.user') && project.hasProperty('gpr.key')) {
+    javadoc {
+        title = 'BasementLib API-Velocity (v' + project.ext.fullVersion + ')'
+        options.encoding = 'UTF-8'
+        options.charSet = 'UTF-8'
+        options.links(
+                'https://checkerframework.org/api/',
+                'https://javadoc.io/static/org.jetbrains/annotations/23.0.0/'
+        )
+        options.addStringOption('Xdoclint:none', '-quiet')
+        if (JavaVersion.current() > JavaVersion.VERSION_1_8) {
+            options.links.add('https://docs.oracle.com/en/java/javase/11/docs/api/')
+        } else {
+            options.links.add('https://docs.oracle.com/javase/8/docs/api/')
+        }
+    }
+    task javadocJar(type: Jar, dependsOn: javadoc) {
+        classifier 'javadoc'
+        from javadoc.destinationDir
+    }
+    task sourcesJar(type: Jar) {
+        classifier 'sources'
+        from sourceSets.main.allSource
+    }
+    artifacts {
+        archives javadocJar
+        archives sourcesJar
+    }
+    publishing {
+        repositories {
+            maven {
+                name = "GitHubPackages"
+                url = uri("https://maven.pkg.github.com/ServerBasement/BasementLib")
+                credentials {
+                    username = project.findProperty("gpr.user") ?: System.getenv("USERNAME")
+                    password = project.findProperty("gpr.key") ?: System.getenv("TOKEN")
+                }
+            }
+        }
+        publications {
+            mavenJava(MavenPublication) {
+                artifactId = 'api-velocity'
+                from components.java
+                artifact sourcesJar
+                artifact javadocJar
+                pom {
+                    name = 'BasementLib API-Velocity'
+                    description = 'A fundamental library plugin for Minecraft servers.'
+                    developers {
+                        developer {
+                            id = 'ohalee'
+                            name = 'ohAlee'
+                            email = 'alebartoh@gmail.com'
+                        }
+                    }
+                    scm {
+                        connection = 'scm:git:https://github.com/ServerBasement/BasementLib.git'
+                        developerConnection = 'scm:git:git@github.com:ServerBasement/BasementLib.git'
+                        url = 'https://github.com/ServerBasement/BasementLib'
+                    }
+                    issueManagement {
+                        system = 'GitHub'
+                        url = 'https://github.com/ServerBasement/BasementLib/issues'
+                    }
+                }
+            }
+        }
+    }
 }

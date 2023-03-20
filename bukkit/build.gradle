@@ -30,13 +30,14 @@ processResources {
 
 shadowJar {
     archiveFileName = "BasementLib-Bukkit-${project.ext.fullVersion}.jar"
-
+    /*
     dependencies {
         include(dependency('it.ohalee.basementlib:.*'))
         include(dependency('org.mariadb.jdbc:.*'))
         include(dependency('com.zaxxer:HikariCP:.*'))
         include(dependency('org.redisson:redisson:.*'))
     }
+    */
 }
 
 artifacts {
