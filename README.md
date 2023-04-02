@@ -1,11 +1,9 @@
-
 # BasementLib
 
 Plugin for the management of a complex network and created to simplify the work of developers who can use optimized and simplified functions for their plugins, based on a single core that will never be changed in order to centralize everything.
 ## Authors
 
 - [@ohAleee](https://github.com/ohAleee)
-
 
 ## Features
 
@@ -22,35 +20,7 @@ Plugin for the management of a complex network and created to simplify the work 
 ## Installation
 
 Adding BasementLib to your project
-The API artifact is published to the Maven Central reposit
-
-### Maven
-If you're using Maven, simply add this to the dependencies section of your POM.
-
-```bash
-<dependencies>
-    <dependency>
-        <groupId>it.ohalee.basementlib</groupId>
-        <artifactId>api</artifactId>
-        <version>1.0</version>
-        <scope>provided</scope>
-    </dependency>
-    
-    <dependency>
-        <groupId>it.ohalee.basementlib</groupId>
-        <artifactId>api-bukkit</artifactId>
-        <version>1.0</version>
-        <scope>provided</scope>
-    </dependency>
-
-    <dependency>
-        <groupId>it.ohalee.basementlib</groupId>
-        <artifactId>api-velocity</artifactId>
-        <version>1.0</version>
-        <scope>provided</scope>
-    </dependency>
-</dependencies>
-```
+The API artifact is published to the GitHub Packages Maven repository. You can add it to your project by adding the following to your build script.
 
 ### Gradle
 If you're using Gradle, you need to add these lines to your build script.
@@ -58,12 +28,23 @@ If you're using Gradle, you need to add these lines to your build script.
 ### Groovy DSL:
 ```bash
 repositories {
-    mavenCentral()
+    maven {
+        url 'https://maven.pkg.github.com/ServerBasement/BasementLib/'
+        credentials {
+            username = github-username
+            password = github-token
+        }
+    }
 }
 
 dependencies {
+    # General API
     compileOnly 'it.ohalee.basementlib:api:1.0'
+    
+    # Bukkit API
     compileOnly 'it.ohalee.basementlib:api-bukkit:1.0'
+    
+    # Velocity API
     compileOnly 'it.ohalee.basementlib:api-velocity:1.0'
 }
 ```
@@ -71,18 +52,29 @@ dependencies {
 ### Kotlin DSL:
 ```bash
 repositories {
-    mavenCentral()
+    maven {
+        url 'https://maven.pkg.github.com/ServerBasement/BasementLib/'
+        credentials {
+            username = github-username
+            password = github-token
+        }
+    }
 }
 
 dependencies {
+    # General API
     compileOnly("it.ohalee.basementlib:api:1.0")
+    
+    # Bukkit API
     compileOnly("it.ohalee.basementlib:api-bukkit:1.0")
+    
+    # Velocity API
     compileOnly("it.ohalee.basementlib:api-velocity:1.0")
 }
 ```
 
 ## Obtaining an instance of the API
-The root API interface is LuckPerms. You need to obtain an instance of this interface in order to do anything.
+The root API interface is BasementLib. You need to obtain an instance of this interface in order to do anything.
 
 ### Using the Bukkit ServicesManager
 When the plugin is enabled, an instance of BasementLib will be provided in the Bukkit ServicesManager. (obviously you need to be writing your plugin for Bukkit!)
@@ -521,7 +513,6 @@ public Optional<Data> getData(UUID uuid) {
 #### TODO
 
 Suggest me
-
 
 ## Roadmap
 
