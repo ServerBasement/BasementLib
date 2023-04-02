@@ -5,6 +5,7 @@ import it.ohalee.basementlib.api.bukkit.scoreboard.ScoreboardProvider;
 import it.ohalee.basementlib.api.bukkit.scoreboard.adapter.ScoreboardAdapter;
 import it.ohalee.basementlib.api.server.BukkitServer;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 public interface BasementBukkit {
 
@@ -16,11 +17,13 @@ public interface BasementBukkit {
     JavaPlugin getPlugin();
 
     /**
-     * Gets the ScoreboardAdapter for managing scoreboard actions
+     * Gets the ScoreboardAdapter for managing scoreboard actions.
+     * If the version is not supported, this method will return null
+     * and the scoreboard API will not work
      *
      * @return the Scoreboard adapter
      */
-    ScoreboardAdapter getScoreboardAdapter();
+    @Nullable ScoreboardAdapter getScoreboardAdapter();
 
     /**
      * Register a custom Scoreboard

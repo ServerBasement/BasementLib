@@ -43,7 +43,8 @@ public class BasementBukkitPlugin extends AbstractBasementPlugin implements Base
     private @Nullable BukkitServer server;
     private @Nullable BukkitTask task;
 
-    private ScoreboardAdapter scoreboardAdapter;
+    // Can be null if the version is not supported by the plugin
+    private @Nullable ScoreboardAdapter scoreboardAdapter;
     private ScoreboardManager scoreboardManager;
 
     public BasementBukkitPlugin(JavaPlugin plugin) {
@@ -152,7 +153,7 @@ public class BasementBukkitPlugin extends AbstractBasementPlugin implements Base
     }
 
     @Override
-    public ScoreboardAdapter getScoreboardAdapter() {
+    public @Nullable ScoreboardAdapter getScoreboardAdapter() {
         return scoreboardAdapter;
     }
 
