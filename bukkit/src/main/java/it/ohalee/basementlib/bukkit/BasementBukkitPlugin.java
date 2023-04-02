@@ -74,14 +74,15 @@ public class BasementBukkitPlugin extends AbstractBasementPlugin implements Base
         }
 
         String version = plugin.getServer().getClass().getPackage().getName().split("\\.")[3];
-        ScoreboardUtils scoreboardUtils;
 
         try {
             Class<?> scoreboardAdapter = Class.forName("it.ohalee.basementlib.bukkit.nms." + version + ".scoreboard.ScoreboardUtils");
-            scoreboardUtils = (ScoreboardUtils) scoreboardAdapter.newInstance();
+            ScoreboardUtils scoreboardUtils = (ScoreboardUtils) scoreboardAdapter.newInstance();
 
             Class<?> colorAdapter = Class.forName("it.ohalee.basementlib.bukkit.nms." + version + ".chat.ColorizerNMS");
             Colorizer.setAdapter((Colorizer.ColorAdapter) colorAdapter.newInstance());
+
+            this.scoreboardAdapter = ScoreboardAdapter.builder(plugin, scoreboardUtils).build();
         } catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
@@ -90,8 +91,6 @@ public class BasementBukkitPlugin extends AbstractBasementPlugin implements Base
             redisManager().registerTopicListener(VelocityNotifyMessage.TOPIC, new VelocityNotifyHandler(this));
             redisManager().registerTopicListener(ServerShutdownMessage.TOPIC, new ServerShutdownHandler(this));
         }
-
-        this.scoreboardAdapter = ScoreboardAdapter.builder(plugin, scoreboardUtils).build();
 
         if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) new BasementPlaceholder(this).register();
     }
