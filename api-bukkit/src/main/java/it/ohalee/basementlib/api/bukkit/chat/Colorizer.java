@@ -10,15 +10,14 @@ import java.util.stream.Collectors;
 public final class Colorizer {
 
     @Setter
-    private static ColorAdapter adapter;
+    private static ColorAdapter adapter = new ColorAdapter();
 
     private Colorizer() {
         throw new AssertionError("Nope");
     }
 
     public static String colorize(String string) {
-        string = ChatColor.translateAlternateColorCodes('&', string);
-        return adapter.translateHex(string);
+        return adapter.translateHex(ChatColor.translateAlternateColorCodes('&', string));
     }
 
     public static List<String> colorize(List<String> strings) {
@@ -33,8 +32,12 @@ public final class Colorizer {
         return adapter.translateHex(msg);
     }
 
-    public interface ColorAdapter {
-        String translateHex(String msg);
+    public static class ColorAdapter {
+
+        public String translateHex(String msg) {
+            return msg;
+        }
+
     }
 
 }

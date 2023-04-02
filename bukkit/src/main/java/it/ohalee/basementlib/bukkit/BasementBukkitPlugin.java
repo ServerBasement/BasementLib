@@ -76,15 +76,17 @@ public class BasementBukkitPlugin extends AbstractBasementPlugin implements Base
         String version = plugin.getServer().getClass().getPackage().getName().split("\\.")[3];
 
         try {
+            Class<?> colorAdapter = Class.forName("it.ohalee.basementlib.bukkit.nms." + version + ".chat.ColorizerNMS");
+            Colorizer.setAdapter((Colorizer.ColorAdapter) colorAdapter.newInstance());
+        } catch (InstantiationException | IllegalAccessException | ClassNotFoundException ignored) {}
+
+        try {
             Class<?> scoreboardAdapter = Class.forName("it.ohalee.basementlib.bukkit.nms." + version + ".scoreboard.ScoreboardUtils");
             ScoreboardUtils scoreboardUtils = (ScoreboardUtils) scoreboardAdapter.newInstance();
 
-            Class<?> colorAdapter = Class.forName("it.ohalee.basementlib.bukkit.nms." + version + ".chat.ColorizerNMS");
-            Colorizer.setAdapter((Colorizer.ColorAdapter) colorAdapter.newInstance());
-
             this.scoreboardAdapter = ScoreboardAdapter.builder(plugin, scoreboardUtils).build();
         } catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
-            throw new RuntimeException(e);
+            plugin.getLogger().warning("Scoreboard API not supported on this version of Minecraft (" + version + ")");
         }
 
         if (redisManager() != null) {
