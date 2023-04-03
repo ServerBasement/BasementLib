@@ -51,7 +51,7 @@ public abstract class AbstractBasementPlugin implements BasementPlugin, Basement
 
     public void enable() {
         logger().info("Loading configuration...");
-        this.adapter = provideConfigurationAdapter(configDirectory().resolve("config.yml").toFile(), true);
+        this.adapter = provideConfigurationAdapter(BasementPlugin.class, configDirectory().resolve("config.yml").toFile(), true);
         this.configuration = new BasementConfiguration(this, adapter);
 
         StorageCredentials storageCredentials = configuration.get(ConfigKeys.MYSQL_CREDENTIALS);
@@ -179,7 +179,7 @@ public abstract class AbstractBasementPlugin implements BasementPlugin, Basement
         return holder;
     }
 
-    public Path resolveConfig(File file, boolean create) {
+    public Path resolveConfig(Class<?> clazz, File file, boolean create) {
         Path configFile = file.toPath();
         // if the config doesn't exist, create it based on the template in the resources dir
         if (create && !Files.exists(configFile)) {
@@ -188,7 +188,7 @@ public abstract class AbstractBasementPlugin implements BasementPlugin, Basement
             } catch (IOException e) {
                 // ignore
             }
-            try (InputStream is = resourceStream(file.getName())) {
+            try (InputStream is = resourceStream(clazz, file.getName())) {
                 Files.copy(is, configFile);
             } catch (IOException e) {
                 throw new RuntimeException(e);

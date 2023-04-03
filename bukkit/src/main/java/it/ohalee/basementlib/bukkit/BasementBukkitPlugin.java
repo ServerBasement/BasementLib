@@ -133,8 +133,8 @@ public class BasementBukkitPlugin extends AbstractBasementPlugin implements Base
     }
 
     @Override
-    public ConfigurationAdapter provideConfigurationAdapter(File file, boolean create) {
-        return new BukkitConfigAdapter(this, resolveConfig(file, create).toFile());
+    public ConfigurationAdapter provideConfigurationAdapter(Class<?> clazz, File file, boolean create) {
+        return new BukkitConfigAdapter(this, resolveConfig(clazz, file, create).toFile());
     }
 
     @Override

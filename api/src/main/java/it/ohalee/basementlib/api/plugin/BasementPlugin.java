@@ -46,15 +46,16 @@ public interface BasementPlugin {
      * @param path the path of the file
      * @return the file as an input stream
      */
-    default InputStream resourceStream(String path) {
-        return getClass().getClassLoader().getResourceAsStream(path);
+    default InputStream resourceStream(Class<?> clazz, String path) {
+        return clazz.getClassLoader().getResourceAsStream(path);
     }
 
     /**
      * Gets a configuration adapter for the given path
      *
+     * @param clazz the class to load the resource from
      * @param file the file to load
      * @return the configuration adapter
      */
-    ConfigurationAdapter provideConfigurationAdapter(File file, boolean create);
+    ConfigurationAdapter provideConfigurationAdapter(Class<?> clazz, File file, boolean create);
 }

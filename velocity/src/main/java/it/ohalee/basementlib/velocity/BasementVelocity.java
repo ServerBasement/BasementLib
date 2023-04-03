@@ -90,8 +90,8 @@ public class BasementVelocity extends AbstractBasementPlugin {
     }
 
     @Override
-    public ConfigurationAdapter provideConfigurationAdapter(File file, boolean create) {
-        return new VelocityConfigAdapter(this, resolveConfig(file, create));
+    public ConfigurationAdapter provideConfigurationAdapter(Class<?> clazz, File file, boolean create) {
+        return new VelocityConfigAdapter(this, resolveConfig(clazz, file, create));
     }
 
     @Override
