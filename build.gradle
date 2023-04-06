@@ -26,9 +26,10 @@ subprojects {
 
     repositories {
         mavenCentral()
-        //mavenLocal()
-        maven { url 'https://libraries.minecraft.net/' }
+        mavenLocal()
         maven { url 'https://repo.papermc.io/repository/maven-public/' }
+        maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
+        maven { url 'https://oss.sonatype.org/content/repositories/central' }
     }
 
     dependencies {
