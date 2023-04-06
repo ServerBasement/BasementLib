@@ -5,12 +5,14 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Field;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
 public interface ScoreboardUtils {
 
+    Map<String, Class<?>> cacheClazz = new HashMap<>();
     Map<KeyField, Field> cacheField = new HashMap<>();
 
     int getCharactersLimits();
@@ -70,12 +72,12 @@ public interface ScoreboardUtils {
             if (this == o) return true;
             if (o == null || getClass() != o.getClass()) return false;
             KeyField keyField = (KeyField) o;
-            return com.google.common.base.Objects.equal(clazz, keyField.clazz) && com.google.common.base.Objects.equal(name, keyField.name);
+            return Objects.equals(clazz, keyField.clazz) && Objects.equals(name, keyField.name);
         }
 
         @Override
         public int hashCode() {
-            return com.google.common.base.Objects.hashCode(clazz, name);
+            return Arrays.hashCode(new Object[] { clazz, name });
         }
     }
 }
