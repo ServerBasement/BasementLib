@@ -13,7 +13,6 @@ dependencies {
     implementation project('nms:V1_8_R3')
     //implementation project('nms:V1_19_R1')
 
-    //compileOnly 'app.ashcon:sportpaper:1.8.8'
     compileOnly 'com.destroystokyo.paper:paper-api:1.15.2-R0.1-SNAPSHOT'
     compileOnly 'me.clip:placeholderapi:2.11.1'
 

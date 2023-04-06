@@ -13,7 +13,7 @@ dependencies {
     annotationProcessor 'com.velocitypowered:velocity-api:3.1.0'
 }
 
-if (project.hasProperty('generateDocs') && project.hasProperty('gpr.user') && project.hasProperty('gpr.key')) {
+if (project.hasProperty('generateDocs')) {
     javadoc {
         title = 'BasementLib API-Velocity (v' + project.ext.fullVersion + ')'
         options.encoding = 'UTF-8'
@@ -42,16 +42,6 @@ if (project.hasProperty('generateDocs') && project.hasProperty('gpr.user') && pr
         archives sourcesJar
     }
     publishing {
-        repositories {
-            maven {
-                name = "GitHubPackages"
-                url = uri("https://maven.pkg.github.com/ServerBasement/BasementLib")
-                credentials {
-                    username = project.findProperty("gpr.user") ?: System.getenv("USERNAME")
-                    password = project.findProperty("gpr.key") ?: System.getenv("TOKEN")
-                }
-            }
-        }
         publications {
             mavenJava(MavenPublication) {
                 artifactId = 'api-velocity'

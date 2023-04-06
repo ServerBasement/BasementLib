@@ -25,11 +25,9 @@ subprojects {
     project.ext.fullVersion = project.ext.majorVersion + '.' + project.ext.minorVersion
 
     repositories {
+        maven { url 'https://repo.papermc.io/repository/maven-public/' }
         mavenCentral()
         mavenLocal()
-        maven { url 'https://repo.papermc.io/repository/maven-public/' }
-        maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
-        maven { url 'https://oss.sonatype.org/content/repositories/central' }
     }
 
     dependencies {
