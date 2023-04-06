@@ -1,3 +1,9 @@
+repositories {
+    mavenLocal()
+    maven { url = 'https://oss.sonatype.org/content/repositories/snapshots' }
+    maven { url = 'https://oss.sonatype.org/content/repositories/central' }
+}
+
 dependencies {
     api project(':api-bukkit')
 

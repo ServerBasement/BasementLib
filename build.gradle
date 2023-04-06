@@ -26,7 +26,7 @@ subprojects {
 
     repositories {
         mavenCentral()
-        mavenLocal()
+        //mavenLocal()
         maven { url 'https://libraries.minecraft.net/' }
         maven { url 'https://repo.papermc.io/repository/maven-public/' }
     }
