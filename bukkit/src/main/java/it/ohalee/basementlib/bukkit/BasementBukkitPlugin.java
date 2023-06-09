@@ -23,8 +23,8 @@ import it.ohalee.basementlib.bukkit.scoreboard.ScoreboardManager;
 import it.ohalee.basementlib.common.config.ConfigKeys;
 import it.ohalee.basementlib.common.plugin.AbstractBasementPlugin;
 import it.ohalee.basementlib.common.plugin.logging.JavaPluginLogger;
-import lombok.RequiredArgsConstructor;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.HumanEntity;
 import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -34,6 +34,8 @@ import org.redisson.remote.RemoteServiceAckTimeoutException;
 
 import java.io.File;
 import java.nio.file.Path;
+import java.util.Collections;
+import java.util.stream.Collectors;
 
 public class BasementBukkitPlugin extends AbstractBasementPlugin implements BasementBukkit {
 
@@ -59,8 +61,8 @@ public class BasementBukkitPlugin extends AbstractBasementPlugin implements Base
             serverID = configuration.get(ConfigKeys.SERVER);
 
         if (serverManager() != null) {
-            server = new BukkitServer(getServerID());
-            task = new ServerInfoRunnable(ServerStatus.OPEN).runTaskTimerAsynchronously(plugin, 10L, 20L);
+            server = new BukkitServer(getServerID(), Collections.emptySet(), 1, false, ServerStatus.OPEN);
+            task = new ServerInfoRunnable().runTaskTimerAsynchronously(plugin, 10L, 20L);
 
             serverManager().setServerAddConsumer(server -> Bukkit.getPluginManager().callEvent(new BasementNewServerFound(server)));
             serverManager().setServerRemoveConsumer(server -> Bukkit.getPluginManager().callEvent(new BasementServerRemoved(server)));
@@ -173,16 +175,13 @@ public class BasementBukkitPlugin extends AbstractBasementPlugin implements Base
         return serverManager().getServer(serverID).orElseThrow(RuntimeException::new);
     }
 
-    @RequiredArgsConstructor
     private class ServerInfoRunnable extends BukkitRunnable {
-        private final ServerStatus serverStatus;
 
         @Override
         public void run() {
             server.setWhitelist(Bukkit.hasWhitelist());
-            server.setOnline(Bukkit.getServer().getOnlinePlayers().size());
+            server.setPlayers(Bukkit.getOnlinePlayers().stream().map(HumanEntity::getName).collect(Collectors.toSet()));
             server.setMax(Bukkit.getMaxPlayers());
-            server.setStatus(serverStatus);
 
             serverManager().addServer(getServerID(), server);
         }
