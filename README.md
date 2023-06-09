@@ -1,6 +1,9 @@
 # BasementLib
 
 Plugin for the management of a complex network and created to simplify the work of developers who can use optimized and simplified functions for their plugins, based on a single core that will never be changed in order to centralize everything.
+
+[![](https://jitpack.io/v/ServerBasement/BasementLib.svg)](https://jitpack.io/#ServerBasement/BasementLib)
+
 ## Authors
 
 - [@ohAleee](https://github.com/ohAleee)
@@ -28,13 +31,7 @@ If you're using Gradle, you need to add these lines to your build script.
 ### Groovy DSL:
 ```bash
 repositories {
-    maven {
-        url 'https://maven.pkg.github.com/ServerBasement/BasementLib/'
-        credentials {
-            username = github-username
-            password = github-token
-        }
-    }
+    maven { url 'https://jitpack.io' }
 }
 
 dependencies {
@@ -52,18 +49,12 @@ dependencies {
 ### Kotlin DSL:
 ```bash
 repositories {
-    maven {
-        url 'https://maven.pkg.github.com/ServerBasement/BasementLib/'
-        credentials {
-            username = github-username
-            password = github-token
-        }
-    }
+    maven { url 'https://jitpack.io' }
 }
 
 dependencies {
     # General API
-    compileOnly("it.ohalee.basementlib:api:1.0")
+    compileOnly("com.github.ServerBasement:BasementLib:api:1.0")
     
     # Bukkit API
     compileOnly("it.ohalee.basementlib:api-bukkit:1.0")
