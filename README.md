@@ -95,7 +95,7 @@ BasementLib api = BasementProvider.get();
 private final ConfigurationAdapter configuration;
 
 public ConfigExample(BasementLib basement, String fileName) {
-    configuration = basement.plugin().provideConfigurationAdapter(new File(fileName), true);
+    configuration = basement.plugin().provideConfigurationAdapter(ConfigExample.class, new File(fileName), true);
 }
 
 public List<String> getNames() {
