@@ -58,7 +58,8 @@ public class ScoreboardUtils implements it.ohalee.basementlib.api.bukkit.scorebo
             Class<?> change = getNMSClass("PacketPlayOutScoreboardScore.EnumScoreboardAction");
             setFieldValue(packet, "d", change.getEnumConstants()[0]);
             return packet;
-        } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+        } catch (InstantiationException | IllegalAccessException | InvocationTargetException |
+                 NoSuchMethodException e) {
             e.printStackTrace();
         }
         return null;
@@ -68,7 +69,8 @@ public class ScoreboardUtils implements it.ohalee.basementlib.api.bukkit.scorebo
     public Object destroyScorePacket(String line) {
         try {
             return getNMSClass("PacketPlayOutScoreboardScore").getConstructor(String.class).newInstance(line);
-        } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+        } catch (InstantiationException | IllegalAccessException | InvocationTargetException |
+                 NoSuchMethodException e) {
             e.printStackTrace();
         }
         return null;

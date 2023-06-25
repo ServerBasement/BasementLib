@@ -9,7 +9,7 @@ server:
   # If you are using Cerebrum to manage your servers, this is automatically set.
   id: "hub_1"
 
-# Settings for MySQL / MariaDB.
+# Settings for MariaDB.
 mysql:
   enabled: true
   address: localhost

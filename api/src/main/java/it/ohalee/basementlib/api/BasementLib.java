@@ -1,9 +1,11 @@
 package it.ohalee.basementlib.api;
 
 import it.ohalee.basementlib.api.persistence.generic.connection.Connector;
-import it.ohalee.basementlib.api.persistence.maria.queries.builders.database.QueryBuilderCreateDatabase;
-import it.ohalee.basementlib.api.persistence.maria.structure.AbstractMariaDatabase;
-import it.ohalee.basementlib.api.persistence.maria.structure.AbstractMariaHolder;
+import it.ohalee.basementlib.api.persistence.generic.connection.TypeConnector;
+import it.ohalee.basementlib.api.persistence.sql.queries.builders.database.QueryBuilderCreateDatabase;
+import it.ohalee.basementlib.api.persistence.sql.structure.AbstractSqlDatabase;
+import it.ohalee.basementlib.api.persistence.sql.structure.AbstractSqlHolder;
+import it.ohalee.basementlib.api.persistence.sql.structure.LocalFactory;
 import it.ohalee.basementlib.api.plugin.BasementPlugin;
 import it.ohalee.basementlib.api.redis.RedisManager;
 import it.ohalee.basementlib.api.remote.RemoteCerebrumService;
@@ -63,28 +65,28 @@ public interface BasementLib {
      * @param database the database
      * @see QueryBuilderCreateDatabase#exec() To create and/or load a database
      */
-    void loadDatabase(AbstractMariaDatabase database);
+    void loadDatabase(AbstractSqlDatabase database);
 
     /**
      * Gets a new Connector object
      *
      * @return connector object
      */
-    Connector createConnector(int minPoolSize, int maxPoolSize, String poolName);
+    Connector createConnector(TypeConnector connector, int minPoolSize, int maxPoolSize, String poolName);
 
     /**
      * Gets a holder instance
      *
      * @return the holder instance
      */
-    @Nullable AbstractMariaHolder holder();
+    @Nullable AbstractSqlHolder holder();
 
     /**
      * Gets the default server database
      *
      * @return the default maria database
      */
-    @Nullable AbstractMariaDatabase database();
+    @Nullable AbstractSqlDatabase database();
 
     /**
      * Gets a database by name
@@ -92,6 +94,13 @@ public interface BasementLib {
      * @param database the database name
      * @return the database
      */
-    @Nullable AbstractMariaDatabase database(String database);
+    @Nullable AbstractSqlDatabase database(String database);
+
+    /**
+     * Gets the h2 provider
+     *
+     * @return the h2 provider
+     */
+    LocalFactory h2();
 
 }

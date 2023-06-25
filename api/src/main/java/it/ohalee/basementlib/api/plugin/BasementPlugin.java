@@ -54,7 +54,7 @@ public interface BasementPlugin {
      * Gets a configuration adapter for the given path
      *
      * @param clazz the class to load the resource from
-     * @param file the file to load
+     * @param file  the file to load
      * @return the configuration adapter
      */
     ConfigurationAdapter provideConfigurationAdapter(Class<?> clazz, File file, boolean create);

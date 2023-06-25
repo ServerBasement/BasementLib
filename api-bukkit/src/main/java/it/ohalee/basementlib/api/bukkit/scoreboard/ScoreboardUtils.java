@@ -77,7 +77,7 @@ public interface ScoreboardUtils {
 
         @Override
         public int hashCode() {
-            return Arrays.hashCode(new Object[] { clazz, name });
+            return Arrays.hashCode(new Object[]{clazz, name});
         }
     }
 }

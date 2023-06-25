@@ -81,7 +81,8 @@ public class BasementBukkitPlugin extends AbstractBasementPlugin implements Base
         try {
             Class<?> colorAdapter = Class.forName("it.ohalee.basementlib.bukkit.nms." + version + ".chat.ColorizerNMS");
             Colorizer.setAdapter((Colorizer.ColorAdapter) colorAdapter.newInstance());
-        } catch (InstantiationException | IllegalAccessException | ClassNotFoundException ignored) {}
+        } catch (InstantiationException | IllegalAccessException | ClassNotFoundException ignored) {
+        }
 
         try {
             Class<?> scoreboardAdapter = Class.forName("it.ohalee.basementlib.bukkit.nms." + version + ".scoreboard.ScoreboardUtils");

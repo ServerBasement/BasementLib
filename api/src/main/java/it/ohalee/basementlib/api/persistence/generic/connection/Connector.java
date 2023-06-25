@@ -1,7 +1,7 @@
 package it.ohalee.basementlib.api.persistence.generic.connection;
 
 import it.ohalee.basementlib.api.persistence.StorageCredentials;
-import it.ohalee.basementlib.api.persistence.maria.structure.data.QueryData;
+import it.ohalee.basementlib.api.persistence.sql.structure.data.QueryData;
 
 import java.sql.PreparedStatement;
 
@@ -11,6 +11,8 @@ import java.sql.PreparedStatement;
  * to maria database.
  */
 public interface Connector {
+
+    TypeConnector getType();
 
     /**
      * Try to connect to maria
