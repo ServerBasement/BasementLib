@@ -29,30 +29,36 @@ public class DefaultRedisManager implements RedisManager {
         config.setThreads(credentials.threads());
 
         if (credentials.hosts().size() > 1) {
+            System.out.println("Using cluster mode... " + credentials.hosts().size() + " hosts");
+            credentials.hosts().forEach(System.out::println);
+
             ClusterServersConfig clusterServersConfig = config.useClusterServers()
                     .setScanInterval(2000)
                     .setReadMode(ReadMode.MASTER_SLAVE)
                     .setCheckSlotsCoverage(false);
             for (String host : credentials.hosts()) {
                 String[] split = host.split(":");
-                if (split.length == 1) clusterServersConfig.addNodeAddress("redis://" + split[0] + "6379");
+                if (split.length == 1) clusterServersConfig.addNodeAddress("redis://" + split[0] + ":6379");
                 else clusterServersConfig.addNodeAddress("redis://" + split[0] + ":" + split[1]);
             }
 
-            if (credentials.username() != null)
+            if (credentials.username() != null && !credentials.username().isEmpty())
                 clusterServersConfig.setUsername(credentials.username());
-            if (credentials.password() != null)
+            if (credentials.password() != null && !credentials.password().isEmpty())
                 clusterServersConfig.setPassword(credentials.password());
         } else {
+            System.out.println("Using single server mode... " + credentials.hosts().size() + " host");
+            credentials.hosts().forEach(System.out::println);
+
             SingleServerConfig serverConfig = config.useSingleServer();
 
             String[] split = credentials.hosts().get(0).split(":");
-            if (split.length == 1) serverConfig.setAddress("redis://" + split[0] + "6379");
+            if (split.length == 1) serverConfig.setAddress("redis://" + split[0] + ":6379");
             else serverConfig.setAddress("redis://" + split[0] + ":" + split[1]);
 
-            if (credentials.username() != null)
+            if (credentials.username() != null && !credentials.username().isEmpty())
                 serverConfig.setUsername(credentials.username());
-            if (credentials.password() != null)
+            if (credentials.password() != null && !credentials.password().isEmpty())
                 serverConfig.setPassword(credentials.password());
         }
 
