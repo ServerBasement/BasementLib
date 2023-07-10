@@ -7,7 +7,6 @@ import it.ohalee.basementlib.api.persistence.StorageCredentials;
 import it.ohalee.basementlib.api.persistence.generic.connection.Connector;
 import it.ohalee.basementlib.api.persistence.generic.connection.TypeConnector;
 import it.ohalee.basementlib.api.persistence.sql.structure.AbstractSqlDatabase;
-import it.ohalee.basementlib.api.persistence.sql.structure.AbstractSqlHolder;
 import it.ohalee.basementlib.api.persistence.sql.structure.LocalFactory;
 import it.ohalee.basementlib.api.plugin.BasementPlugin;
 import it.ohalee.basementlib.api.plugin.logging.PluginLogger;
@@ -162,38 +161,29 @@ public abstract class AbstractBasementPlugin implements BasementPlugin, Basement
         return cerebrumService;
     }
 
-
-    @Override
-    public @Nullable AbstractSqlDatabase database() {
-        return mariaFactory.database();
-    }
-
-    @Override
-    public @Nullable AbstractSqlDatabase database(String database) {
-        if (mariaFactory.holder() == null) throw new IllegalStateException("Database is not enabled.");
-        return mariaFactory.holder().useDatabase(database);
-    }
-
-    @Override
-    public void loadDatabase(AbstractSqlDatabase database) {
-        if (mariaFactory.holder() == null) throw new IllegalStateException("Database is not enabled.");
-        mariaFactory.holder().loadDatabase(database);
-    }
-
     @Override
     public Connector createConnector(TypeConnector type, int minPoolSize, int maxPoolSize, String poolName) {
         return type == TypeConnector.H2 ? new H2Connector() : new MariaConnector(minPoolSize, maxPoolSize, poolName);
     }
 
     @Override
-    public @Nullable AbstractSqlHolder holder() {
-        if (mariaFactory.holder() == null) throw new IllegalStateException("Database is not enabled.");
-        return mariaFactory.holder();
+    public LocalFactory h2() {
+        return h2Factory;
     }
 
     @Override
-    public LocalFactory h2() {
-        return h2Factory;
+    public AbstractSqlDatabase maria() {
+        if (mariaFactory == null) throw new IllegalStateException("MariaDB is not enabled");
+        return mariaFactory.database();
+    }
+
+    @Override
+    public AbstractSqlDatabase database(TypeConnector type, String database) {
+        if (type == TypeConnector.H2)
+            return h2Factory.useDatabase(database);
+        if (type == TypeConnector.MARIADB)
+            return maria();
+        throw new IllegalArgumentException("Unknown type connector: " + type);
     }
 
     public Path resolveConfig(Class<?> clazz, File file, boolean create) {

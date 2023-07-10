@@ -33,7 +33,6 @@ public class H2Factory implements LocalFactory {
         this.holder = new SqlHolder(null);
     }
 
-
     @Override
     public synchronized @Nullable AbstractSqlDatabase useDatabase(String databaseName) {
         AbstractSqlDatabase database = holder.useDatabase(databaseName);
