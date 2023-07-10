@@ -57,7 +57,7 @@ public class BasementBukkitPlugin extends AbstractBasementPlugin implements Base
     public void enable() {
         super.enable();
 
-        if (redisManager() == null || remoteCerebrumService() == null)
+        if (redisManager() == null || remoteCerebrumService() == null || !configuration.get(ConfigKeys.SERVER).isEmpty())
             serverID = configuration.get(ConfigKeys.SERVER);
 
         if (serverManager() != null) {
