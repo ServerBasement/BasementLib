@@ -9,7 +9,7 @@ subprojects {
     apply plugin: 'maven-publish'
 
     group = 'it.ohalee.basementlib'
-    version = '1.3.0'
+    version = '1.3.1'
 
     sourceCompatibility = 1.8
     targetCompatibility = 1.8
@@ -22,7 +22,8 @@ subprojects {
 
     project.ext.majorVersion = '1'
     project.ext.minorVersion = '3'
-    project.ext.fullVersion = project.ext.majorVersion + '.' + project.ext.minorVersion
+    project.ext.superMinorVersion = '1'
+    project.ext.fullVersion = project.ext.majorVersion + '.' + project.ext.minorVersion + project.ext.superMinorVersion
 
     repositories {
         maven { url 'https://repo.papermc.io/repository/maven-public/' }
