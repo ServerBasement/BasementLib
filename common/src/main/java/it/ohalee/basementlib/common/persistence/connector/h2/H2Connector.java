@@ -24,7 +24,7 @@ public class H2Connector extends SqlConnector {
         }
 
         try {
-            connection = new NonClosableConnection(new JdbcConnection("jdbc:h2:" + host, new Properties()));
+            connection = new NonClosableConnection(new JdbcConnection("jdbc:h2:./data/" + host, new Properties()));
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

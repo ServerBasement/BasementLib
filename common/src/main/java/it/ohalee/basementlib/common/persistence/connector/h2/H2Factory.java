@@ -14,28 +14,27 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Getter
 @Accessors(fluent = true)
-public class H2Factory implements LocalFactory {
+public class H2Factory {
 
     private final AbstractBasementPlugin plugin;
     private final Path folder;
-    private final AbstractSqlHolder holder;
 
+    private final Map<String, AbstractSqlDatabase> databases = new HashMap<>();
     private final List<Connector> connectors = new ArrayList<>();
 
     public H2Factory(AbstractBasementPlugin plugin, Path folder) {
         this.plugin = plugin;
         this.folder = folder;
-
-        this.holder = new SqlHolder(null);
     }
 
-    @Override
     public synchronized @Nullable AbstractSqlDatabase useDatabase(String databaseName) {
-        AbstractSqlDatabase database = holder.useDatabase(databaseName);
+        AbstractSqlDatabase database = databases.get(databaseName);
         if (database != null) {
             return database;
         }
@@ -43,26 +42,14 @@ public class H2Factory implements LocalFactory {
         Connector connector = plugin.createConnector(TypeConnector.H2, -1, -1, null);
         connector.connect(databaseName + ".mv.db");
 
+        AbstractSqlHolder holder = new SqlHolder(connector);
+
         database = new SqlDatabase(holder, databaseName);
         holder.loadDatabase(database);
 
         connectors.add(connector);
+        databases.put(databaseName, database);
         return database;
-    }
-
-    @Override
-    public void loadDatabase(AbstractSqlDatabase database) {
-        holder.loadDatabase(database);
-    }
-
-    @Override
-    public void unloadDatabase(AbstractSqlDatabase database) {
-        holder.unloadDatabase(database);
-    }
-
-    @Override
-    public void unloadDatabase(String databaseName) {
-        holder.unloadDatabase(databaseName);
     }
 
     public void shutdown() {

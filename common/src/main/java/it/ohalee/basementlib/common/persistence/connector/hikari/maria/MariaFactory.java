@@ -18,7 +18,7 @@ public class MariaFactory {
     private final AbstractSqlHolder holder;
 
     public MariaFactory(AbstractBasementPlugin plugin, StorageCredentials storageCredentials) {
-        Connector connector = plugin.createConnector(TypeConnector.MARIADB, storageCredentials.minIdleConnections(), storageCredentials.maxPoolSize(), "basement");
+        Connector connector = plugin.createConnector(TypeConnector.H2, storageCredentials.minIdleConnections(), storageCredentials.maxPoolSize(), "basement");
         connector.connect(storageCredentials);
 
         holder = new SqlHolder(connector);

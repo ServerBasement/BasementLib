@@ -64,12 +64,7 @@ public interface BasementLib {
      */
     Connector createConnector(TypeConnector connector, int minPoolSize, int maxPoolSize, String poolName);
 
-    /**
-     * Gets the h2 provider
-     *
-     * @return the h2 provider
-     */
-    LocalFactory h2();
+    AbstractSqlDatabase h2(String database);
 
     AbstractSqlDatabase maria();
 

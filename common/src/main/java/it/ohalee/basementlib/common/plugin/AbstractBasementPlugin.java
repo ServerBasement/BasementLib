@@ -167,8 +167,8 @@ public abstract class AbstractBasementPlugin implements BasementPlugin, Basement
     }
 
     @Override
-    public LocalFactory h2() {
-        return h2Factory;
+    public AbstractSqlDatabase h2(String database) {
+        return h2Factory.useDatabase(database);
     }
 
     @Override
