@@ -15,6 +15,12 @@ public interface ConfigurationAdapter {
 
     int getInteger(String path, int def);
 
+    double getDouble(String path, double def);
+
+    float getFloat(String path, float def);
+
+    long getLong(String path, long def);
+
     boolean getBoolean(String path, boolean def);
 
     List<String> getStringList(String path, List<String> def);

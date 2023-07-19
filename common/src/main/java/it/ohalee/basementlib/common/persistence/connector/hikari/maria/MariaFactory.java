@@ -21,7 +21,7 @@ public class MariaFactory {
         Connector connector = plugin.createConnector(TypeConnector.MARIADB, storageCredentials.minIdleConnections(), storageCredentials.maxPoolSize(), "basement");
         connector.connect(storageCredentials);
 
-        holder = new SqlHolder(connector);
+        holder = new SqlHolder(connector, false);
         database = holder.createDatabase(storageCredentials.database()).ifNotExists(true).build().execReturn();
     }
 

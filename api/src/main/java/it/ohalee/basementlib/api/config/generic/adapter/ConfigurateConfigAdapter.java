@@ -62,6 +62,21 @@ public abstract class ConfigurateConfigAdapter implements ConfigurationAdapter {
     }
 
     @Override
+    public double getDouble(String path, double def) {
+        return resolvePath(path).getDouble(def);
+    }
+
+    @Override
+    public float getFloat(String path, float def) {
+        return (float) resolvePath(path).getDouble(def);
+    }
+
+    @Override
+    public long getLong(String path, long def) {
+        return resolvePath(path).getLong(def);
+    }
+
+    @Override
     public boolean getBoolean(String path, boolean def) {
         return resolvePath(path).getBoolean(def);
     }

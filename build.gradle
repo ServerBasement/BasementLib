@@ -23,7 +23,7 @@ subprojects {
     project.ext.majorVersion = '1'
     project.ext.minorVersion = '3'
     project.ext.superMinorVersion = '1'
-    project.ext.fullVersion = project.ext.majorVersion + '.' + project.ext.minorVersion + project.ext.superMinorVersion
+    project.ext.fullVersion = project.ext.majorVersion + '.' + project.ext.minorVersion + '.' + project.ext.superMinorVersion
 
     repositories {
         maven { url 'https://repo.papermc.io/repository/maven-public/' }

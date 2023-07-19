@@ -5,10 +5,7 @@ import it.ohalee.basementlib.api.persistence.generic.connection.Connector;
 import it.ohalee.basementlib.api.persistence.sql.structure.data.QueryData;
 import it.ohalee.basementlib.common.persistence.sql.data.QueryDataImpl;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.logging.Logger;
 
 public abstract class SqlConnector implements Connector {
@@ -49,6 +46,16 @@ public abstract class SqlConnector implements Connector {
             throwable.printStackTrace();
         }
         return null;
+    }
+
+    @Override
+    public DatabaseMetaData getMetaData() throws SQLException {
+        return getConnection().getMetaData();
+    }
+
+    @Override
+    public String getCatalog() throws SQLException {
+        return getConnection().getCatalog();
     }
 
     protected abstract Connection getConnection() throws SQLException;

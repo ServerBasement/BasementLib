@@ -144,7 +144,6 @@ public class QueryCreateTable extends SqlQuery implements QueryBuilderCreateTabl
         builder.append(databaseName).append(".").append(tableName).append(" (");
 
         // columns
-
         columns.forEach(column -> builder.append(column.toString()).append(", "));
 
         // primary key

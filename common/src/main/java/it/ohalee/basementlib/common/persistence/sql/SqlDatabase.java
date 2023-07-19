@@ -1,14 +1,18 @@
 package it.ohalee.basementlib.common.persistence.sql;
 
 import it.ohalee.basementlib.api.persistence.sql.queries.builders.data.*;
+import it.ohalee.basementlib.api.persistence.sql.queries.builders.table.QueryBuilderAlterTable;
 import it.ohalee.basementlib.api.persistence.sql.queries.builders.table.QueryBuilderCreateTable;
 import it.ohalee.basementlib.api.persistence.sql.queries.builders.table.QueryBuilderDropTable;
+import it.ohalee.basementlib.api.persistence.sql.queries.builders.table.QueryBuilderTableExists;
 import it.ohalee.basementlib.api.persistence.sql.structure.AbstractSqlDatabase;
 import it.ohalee.basementlib.api.persistence.sql.structure.AbstractSqlHolder;
 import it.ohalee.basementlib.api.persistence.sql.structure.AbstractSqlTable;
 import it.ohalee.basementlib.common.persistence.sql.queries.data.*;
+import it.ohalee.basementlib.common.persistence.sql.queries.table.QueryAlterTable;
 import it.ohalee.basementlib.common.persistence.sql.queries.table.QueryCreateTable;
 import it.ohalee.basementlib.common.persistence.sql.queries.table.QueryDropTable;
+import it.ohalee.basementlib.common.persistence.sql.queries.table.QueryTableExists;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -51,6 +55,16 @@ public class SqlDatabase implements AbstractSqlDatabase {
     @Override
     public String getName() {
         return databaseName;
+    }
+
+    @Override
+    public QueryBuilderTableExists tableExists(String tableName) {
+        return new QueryTableExists(this, tableName);
+    }
+
+    @Override
+    public QueryBuilderAlterTable alterTable(String tableName) {
+        return new QueryAlterTable(this, tableName);
     }
 
     @Override

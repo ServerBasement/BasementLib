@@ -5,6 +5,7 @@ import it.ohalee.basementlib.common.persistence.connector.SqlConnector;
 import org.h2.jdbc.JdbcConnection;
 
 import java.sql.Connection;
+import java.sql.DatabaseMetaData;
 import java.sql.SQLException;
 import java.util.Properties;
 
@@ -53,4 +54,6 @@ public class H2Connector extends SqlConnector {
     protected Connection getConnection() throws SQLException {
         return connection;
     }
+
+
 }

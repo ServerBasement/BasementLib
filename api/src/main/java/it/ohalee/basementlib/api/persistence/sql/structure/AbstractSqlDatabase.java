@@ -1,7 +1,9 @@
 package it.ohalee.basementlib.api.persistence.sql.structure;
 
+import it.ohalee.basementlib.api.persistence.sql.queries.builders.table.QueryBuilderAlterTable;
 import it.ohalee.basementlib.api.persistence.sql.queries.builders.table.QueryBuilderCreateTable;
 import it.ohalee.basementlib.api.persistence.sql.queries.builders.table.QueryBuilderDropTable;
+import it.ohalee.basementlib.api.persistence.sql.queries.builders.table.QueryBuilderTableExists;
 
 /**
  * Represents the abstract definition of the MariaDatabase class,
@@ -15,6 +17,16 @@ public interface AbstractSqlDatabase extends AbstractQueryExecutor {
      * @return name
      */
     String getName();
+
+    QueryBuilderTableExists tableExists(String tableName);
+
+    /**
+     * initializes a query to alter a table on this database
+     *
+     * @param tableName name of the table to be altered
+     * @return query to build
+     */
+    QueryBuilderAlterTable alterTable(String tableName);
 
     /**
      * initializes a query to create a table on this database

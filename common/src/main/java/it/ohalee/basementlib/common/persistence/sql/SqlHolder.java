@@ -17,9 +17,11 @@ import java.util.Map;
 public class SqlHolder extends AbstractSqlHolder {
 
     private final Map<String, AbstractSqlDatabase> databases = new HashMap<>();
+    private final boolean h2;
 
-    public SqlHolder(Connector connector) {
+    public SqlHolder(Connector connector, boolean h2) {
         super(connector);
+        this.h2 = h2;
     }
 
     public void loadDatabase(AbstractSqlDatabase database) {
@@ -84,4 +86,8 @@ public class SqlHolder extends AbstractSqlHolder {
         return new QueryReplace(this, database);
     }
 
+    @Override
+    public boolean isH2() {
+        return h2;
+    }
 }

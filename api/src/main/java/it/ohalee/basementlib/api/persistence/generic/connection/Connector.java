@@ -3,7 +3,9 @@ package it.ohalee.basementlib.api.persistence.generic.connection;
 import it.ohalee.basementlib.api.persistence.StorageCredentials;
 import it.ohalee.basementlib.api.persistence.sql.structure.data.QueryData;
 
+import java.sql.DatabaseMetaData;
 import java.sql.PreparedStatement;
+import java.sql.SQLException;
 
 /**
  * It represents the abstraction of the object
@@ -65,4 +67,7 @@ public interface Connector {
 
     void close();
 
+    DatabaseMetaData getMetaData() throws SQLException;
+
+    String getCatalog() throws SQLException;
 }

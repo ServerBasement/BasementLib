@@ -34,4 +34,5 @@ public abstract class AbstractSqlHolder extends Holder implements AbstractQueryH
      */
     public abstract QueryBuilderDropDatabase dropDatabase(String databaseName);
 
+    public abstract boolean isH2();
 }
