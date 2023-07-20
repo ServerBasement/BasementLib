@@ -138,7 +138,7 @@ public class QueryCreateTable extends SqlQuery implements QueryBuilderCreateTabl
 
         if (ifNotExists)
             builder.append("IF NOT EXISTS").append(" ");
-        else if (orReplace)
+        else if (orReplace && !holder.isH2()) // Replace is not supported by H2
             builder.append("OR REPLACE").append(" ");
 
         builder.append(databaseName).append(".").append(tableName).append(" (");
@@ -159,8 +159,6 @@ public class QueryCreateTable extends SqlQuery implements QueryBuilderCreateTabl
         builder.append(")");
 
         // foreign key
-
-
         while (!foreignKeys.isEmpty()) {
             ForeignKeyDefinition fkd = foreignKeys.poll();
             builder.append(", ").append("FOREIGN KEY")

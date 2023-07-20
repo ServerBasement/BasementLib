@@ -36,9 +36,9 @@ public class QueryCreateDatabase extends SqlQuery implements QueryBuilderCreateD
     @Override
     public QueryBuilderCreateDatabase build() {
         StringBuilder builder = new StringBuilder("CREATE ");
-        if (orReplace)
+        if (orReplace && !holder.isH2()) // H2 doesn't support OR REPLACE
             builder.append("OR REPLACE ");
-        builder.append("DATABASE ");
+        builder.append(holder.isH2() ? "SCHEMA " : "DATABASE ");
         if (ifNotExists)
             builder.append("IF NOT EXISTS ");
         builder.append(databaseName).append(";");
