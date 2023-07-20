@@ -44,7 +44,7 @@ public class H2Factory {
 
         AbstractSqlHolder holder = new SqlHolder(connector, true);
 
-        database = new SqlDatabase(holder, databaseName);
+        database = holder.createDatabase(databaseName).ifNotExists(true).build().execReturn();
         holder.loadDatabase(database);
 
         connectors.add(connector);
