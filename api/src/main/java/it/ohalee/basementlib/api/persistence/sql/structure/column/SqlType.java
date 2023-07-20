@@ -11,7 +11,7 @@ public enum SqlType {
 
     VARCHAR("VARCHAR", "VARCHAR"), // size
     TEXT("TEXT", null),
-    TINYINT("INT ", "TINYINT"),
+    TINYINT("TINYINT ", "TINYINT"),
     BOOL("BOOL", "BOOLEAN"),
     SMALLINT("SMALLINT", "SMALLINT"),
     MEDIUMINT("MEDIUMINT", null),
