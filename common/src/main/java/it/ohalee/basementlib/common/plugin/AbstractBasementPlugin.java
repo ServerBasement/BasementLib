@@ -163,7 +163,7 @@ public abstract class AbstractBasementPlugin implements BasementPlugin, Basement
 
     @Override
     public Connector createConnector(TypeConnector type, int minPoolSize, int maxPoolSize, String poolName) {
-        return type == TypeConnector.H2 ? new H2Connector() : new MariaConnector(minPoolSize, maxPoolSize, poolName);
+        return type == TypeConnector.H2 ? new H2Connector(configDirectory()) : new MariaConnector(minPoolSize, maxPoolSize, poolName);
     }
 
     @Override

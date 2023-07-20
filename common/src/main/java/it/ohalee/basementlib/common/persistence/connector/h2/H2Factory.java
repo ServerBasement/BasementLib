@@ -40,7 +40,7 @@ public class H2Factory {
         }
 
         Connector connector = plugin.createConnector(TypeConnector.H2, -1, -1, null);
-        connector.connect(databaseName + ".mv.db");
+        connector.connect(databaseName);
 
         AbstractSqlHolder holder = new SqlHolder(connector, true);
 

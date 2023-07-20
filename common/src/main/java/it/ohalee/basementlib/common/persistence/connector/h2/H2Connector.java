@@ -4,14 +4,20 @@ import it.ohalee.basementlib.api.persistence.generic.connection.TypeConnector;
 import it.ohalee.basementlib.common.persistence.connector.SqlConnector;
 import org.h2.jdbc.JdbcConnection;
 
+import java.nio.file.Path;
 import java.sql.Connection;
-import java.sql.DatabaseMetaData;
 import java.sql.SQLException;
 import java.util.Properties;
 
 public class H2Connector extends SqlConnector {
 
     private NonClosableConnection connection;
+    private final Path path;
+
+    public H2Connector(Path path) {
+        super();
+        this.path = path;
+    }
 
     @Override
     public TypeConnector getType() {
@@ -25,7 +31,8 @@ public class H2Connector extends SqlConnector {
         }
 
         try {
-            connection = new NonClosableConnection(new JdbcConnection("jdbc:h2:./data/" + host, new Properties()));
+            Path path = this.path.resolve("data/" + host);
+            connection = new NonClosableConnection(new JdbcConnection("jdbc:h2:" + path.toFile().getAbsolutePath(), new Properties()));
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
