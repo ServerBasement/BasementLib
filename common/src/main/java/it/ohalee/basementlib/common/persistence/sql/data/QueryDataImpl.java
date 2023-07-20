@@ -70,13 +70,13 @@ public class QueryDataImpl implements QueryData {
     @Override
     public boolean first() {
         index = 0;
-        return dataByName.size() > 0;
+        return !dataByName.isEmpty();
     }
 
     @Override
     public boolean last() {
         index = dataByName.size() - 1;
-        return dataByName.size() > 0;
+        return !dataByName.isEmpty();
     }
 
     @Override
