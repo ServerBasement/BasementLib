@@ -114,7 +114,7 @@ public class QueryInsert extends SqlQuery implements QueryBuilderInsert {
     @Override
     public QueryBuilderInsert build() {
         StringBuilder builder = new StringBuilder("INSERT ");
-        if (ignore)
+        if (ignore && !holder.isH2()) // H2 does not support IGNORE
             builder.append("IGNORE ");
         builder.append("INTO ");
         builder.append(databaseName).append(".").append(tableName);
