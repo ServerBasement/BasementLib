@@ -147,16 +147,18 @@ public class QueryCreateTable extends SqlQuery implements QueryBuilderCreateTabl
         columns.forEach(column -> builder.append(column.toString()).append(", "));
 
         // primary key
-        builder.append("primary key").append("(");
+        if (!primaryKeys.isEmpty()) {
+            builder.append("primary key").append("(");
 
-        while (!primaryKeys.isEmpty()) {
-            String key = primaryKeys.poll();
-            builder.append(key);
-            if (!primaryKeys.isEmpty())
-                builder.append(",");
+            while (!primaryKeys.isEmpty()) {
+                String key = primaryKeys.poll();
+                builder.append(key);
+                if (!primaryKeys.isEmpty())
+                    builder.append(",");
+            }
+
+            builder.append(")");
         }
-
-        builder.append(")");
 
         // foreign key
         while (!foreignKeys.isEmpty()) {
