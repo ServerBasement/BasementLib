@@ -27,6 +27,15 @@ public interface QueryBuilderUpdate extends ExecutiveQuery<QueryBuilderUpdate> {
     QueryBuilderUpdate set(String column, Object value);
 
     /**
+     * Sets the specified column to a null value.
+     * The method can be used to set a column to null value.
+     *
+     * @param column the column to be set to null value
+     * @return the QueryBuilderUpdate instance with the column set to null value
+     */
+    QueryBuilderUpdate setNull(String column);
+
+    /**
      * Same as QueryBuilderUpdate::set(), made for consistency,
      * but value would not be quoted.
      *

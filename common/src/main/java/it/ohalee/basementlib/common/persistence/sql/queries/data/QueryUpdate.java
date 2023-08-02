@@ -57,6 +57,12 @@ public class QueryUpdate extends SqlQuery implements QueryBuilderUpdate {
     }
 
     @Override
+    public QueryBuilderUpdate setNull(String str) {
+        set.add(str + "=NULL");
+        return this;
+    }
+
+    @Override
     public QueryBuilderUpdate setNQ(String str, Object value) {
         if (value == null) {
             set.add(str + "=NULL");
