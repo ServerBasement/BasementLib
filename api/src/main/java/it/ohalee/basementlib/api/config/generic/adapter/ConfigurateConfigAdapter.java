@@ -91,6 +91,11 @@ public abstract class ConfigurateConfigAdapter implements ConfigurationAdapter {
         return node.getList(Object::toString);
     }
 
+    @Override
+    public Object section(String path) {
+        throw new UnsupportedOperationException("Method section is not supported in this adapter.");
+    }
+
     @SuppressWarnings("unchecked")
     @Override
     public Map<String, String> getStringMap(String path, Map<String, String> def) {

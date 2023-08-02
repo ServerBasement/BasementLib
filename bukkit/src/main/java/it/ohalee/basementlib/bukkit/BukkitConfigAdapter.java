@@ -80,6 +80,11 @@ public class BukkitConfigAdapter implements ConfigurationAdapter {
     }
 
     @Override
+    public ConfigurationSection section(String path) {
+        return this.configuration.getConfigurationSection(path);
+    }
+
+    @Override
     public Map<String, String> getStringMap(String path, Map<String, String> def) {
         Map<String, String> map = new HashMap<>();
         ConfigurationSection section = this.configuration.getConfigurationSection(path);
