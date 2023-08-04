@@ -12,7 +12,9 @@ dependencies {
     api 'com.zaxxer:HikariCP:4.0.3'
     api 'com.h2database:h2:1.4.199'
 
-    api 'org.redisson:redisson:3.23.2'
+    api ('org.redisson:redisson:3.23.2') {
+        exclude group: 'io.netty'
+    }
 
     api 'org.spongepowered:configurate-core:3.7.2'
     api 'org.spongepowered:configurate-yaml:3.7.2'

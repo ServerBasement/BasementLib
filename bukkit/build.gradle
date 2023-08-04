@@ -16,6 +16,8 @@ dependencies {
     compileOnly 'com.destroystokyo.paper:paper-api:1.15.2-R0.1-SNAPSHOT'
     compileOnly 'me.clip:placeholderapi:2.11.1'
 
+    implementation 'io.netty:netty-all:4.1.95.Final'
+
     compileOnly 'org.projectlombok:lombok:1.18.24'
     annotationProcessor 'org.projectlombok:lombok:1.18.24'
 }
@@ -28,14 +30,8 @@ processResources {
 
 shadowJar {
     archiveFileName = "BasementLib-Bukkit-${project.ext.fullVersion}.jar"
-    /*
-    dependencies {
-        include(dependency('it.ohalee.basementlib:.*'))
-        include(dependency('org.mariadb.jdbc:.*'))
-        include(dependency('com.zaxxer:HikariCP:.*'))
-        include(dependency('org.redisson:redisson:.*'))
-    }
-    */
+
+    relocate 'io.netty', 'it.ohalee.basementlib.lib.netty'
 }
 
 artifacts {
