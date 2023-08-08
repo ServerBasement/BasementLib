@@ -7,9 +7,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'io.netty:netty-all:4.1.95.Final'
-    runtimeOnly 'com.fasterxml.jackson.core:jackson-core:2.14.2'
-
+    compileOnly project(':common:loader-utils')
     implementation project(':common')
     implementation project(':api-bukkit')
 
@@ -23,20 +21,22 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok:1.18.24'
 }
 
-processResources {
-    filesMatching('plugin.yml') {
-        expand 'pluginVersion': project.ext.fullVersion
-    }
-}
-
 shadowJar {
-    archiveFileName = "BasementLib-Bukkit-${project.ext.fullVersion}.jar"
+    archiveFileName = "basementlib-bukkit.jarinjar"
 
     dependencies {
-        exclude(dependency('com.fasterxml.jackson.core:jackson-core:2.15.2'))
+        include(dependency('it.ohalee.basementlib:.*'))
     }
 
     relocate 'io.netty', 'it.ohalee.basementlib.lib.netty'
+    relocate 'com.github.benmanes.caffeine', 'it.ohalee.basementlib.lib.caffeine'
+    relocate 'net.bytebuddy', 'it.ohalee.basementlib.bytebuddy'
+    relocate 'ninja.leaping.configurate', 'it.ohalee.basementlib.lib.configurate'
+    relocate 'org.checkerframework', 'it.ohalee.basementlib.lib.checkerframework'
+    // relocate 'org.mariadb.jdbc', 'it.ohalee.basementlib.lib.mariadb'
+    // relocate 'org.h2', 'it.ohalee.basementlib.lib.h2'
+    // relocate 'org.redisson', 'it.ohalee.basementlib.lib.redisson'
+    // relocate 'com.zaxxer.hikari', 'it.ohalee.basementlib.lib.hikari'
 }
 
 artifacts {

@@ -1,5 +1,5 @@
 name: BasementLib
-main: it.ohalee.basementlib.bukkit.BasementBukkitMain
+main: it.ohalee.basementlib.bukkit.loader.BukkitLoaderPlugin
 version: ${pluginVersion}
 api-version: 1.13
 author: ohAlee

@@ -7,6 +7,26 @@ test {
 dependencies {
     api project(':api')
 
+    compileOnly project(':common:loader-utils')
+
+    api 'org.mariadb.jdbc:mariadb-java-client:3.0.6'
+    api 'com.zaxxer:HikariCP:4.0.3'
+    api 'com.h2database:h2:1.4.199'
+
+    api 'com.google.code.gson:gson:2.8.6'
+    api 'com.google.guava:guava:19.0'
+
+    api('org.redisson:redisson:3.23.2') {
+        transitive = false
+    }
+
+    api('org.spongepowered:configurate-core:3.7.2') {
+        transitive = false
+    }
+    api('org.spongepowered:configurate-yaml:3.7.2') {
+        transitive = false
+    }
+
     api 'org.checkerframework:checker-qual:3.22.1'
 
     compileOnly 'org.projectlombok:lombok:1.18.24'

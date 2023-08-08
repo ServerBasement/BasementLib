@@ -11,8 +11,8 @@ import java.util.Properties;
 
 public class H2Connector extends SqlConnector {
 
-    private NonClosableConnection connection;
     private final Path path;
+    private NonClosableConnection connection;
 
     public H2Connector(Path path) {
         super();

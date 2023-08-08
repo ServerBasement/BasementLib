@@ -1,11 +1,6 @@
 package it.ohalee.basementlib.api.persistence.sql.queries.builders.table;
 
 import it.ohalee.basementlib.api.persistence.generic.queries.effective.ExecutiveQuery;
-import it.ohalee.basementlib.api.persistence.generic.queries.effective.ReturningQuery;
-import it.ohalee.basementlib.api.persistence.sql.structure.AbstractSqlTable;
-import it.ohalee.basementlib.api.persistence.sql.structure.column.SqlType;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 
 public interface QueryBuilderAlterTable extends ExecutiveQuery<QueryBuilderAlterTable> {
 

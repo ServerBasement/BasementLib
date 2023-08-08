@@ -19,7 +19,7 @@ public interface ConfigurationAdapter {
 
     /**
      * Reloads the plugin.
-     *
+     * <p>
      * This method is used to reload the BasementPlugin instance. It triggers a reload operation, which can involve
      * re-initializing certain components or refreshing resources used by the plugin. After the reload operation is completed,
      * the plugin is in its reloaded state and ready to continue its operation.
@@ -33,7 +33,7 @@ public interface ConfigurationAdapter {
      * If the property doesn't exist, it returns the default value provided.
      *
      * @param path The path of the string property.
-     * @param def The default value to be returned if the property doesn't exist.
+     * @param def  The default value to be returned if the property doesn't exist.
      * @return The value of the string property specified by the path, or the default value if property doesn't exist.
      */
     String getString(String path, String def);
@@ -43,7 +43,7 @@ public interface ConfigurationAdapter {
      * If the path does not exist or the retrieved value is not an integer, the default value will be returned.
      *
      * @param path The path to the integer value in the configuration file.
-     * @param def The default value to be returned if the path does not exist or the retrieved value is not an integer.
+     * @param def  The default value to be returned if the path does not exist or the retrieved value is not an integer.
      * @return The integer value at the specified path, or the default value if the path does not exist or the retrieved value is not an integer.
      */
     int getInteger(String path, int def);
@@ -53,7 +53,7 @@ public interface ConfigurationAdapter {
      * or the default value if no value is found.
      *
      * @param path the path to retrieve the double value from
-     * @param def the default value to return if the path does not exist or the value is not a valid double
+     * @param def  the default value to return if the path does not exist or the value is not a valid double
      * @return the double value at the given path, or the default value if no value is found or the value is not a valid double
      */
     double getDouble(String path, double def);
@@ -72,9 +72,9 @@ public interface ConfigurationAdapter {
      * not a valid long, the default value supplied will be returned.
      *
      * @param path the path to retrieve the value from
-     * @param def the default value to return if the path does not exist or the value is not a valid long
+     * @param def  the default value to return if the path does not exist or the value is not a valid long
      * @return the value associated with the specified path as a long, or the default value if the path does not exist
-     *         or the value is not a valid long
+     * or the value is not a valid long
      */
     long getLong(String path, long def);
 
@@ -84,10 +84,10 @@ public interface ConfigurationAdapter {
      * value is returned.
      *
      * @param path The path of the boolean value to retrieve.
-     * @param def The default value to return if the path does not exist or cannot
-     *            be parsed as a boolean value.
+     * @param def  The default value to return if the path does not exist or cannot
+     *             be parsed as a boolean value.
      * @return The boolean value associated with the given path, or the default
-     *         value if the path does not exist or cannot be parsed.
+     * value if the path does not exist or cannot be parsed.
      */
     boolean getBoolean(String path, boolean def);
 
@@ -95,7 +95,7 @@ public interface ConfigurationAdapter {
      * Returns a List of Strings for the specified path, or the default value if the path does not exist or the value is not a List of Strings.
      *
      * @param path the path of the configuration key to retrieve the List of Strings from
-     * @param def the default value to return if the path does not exist or the value is not a List of Strings
+     * @param def  the default value to return if the path does not exist or the value is not a List of Strings
      * @return a List of Strings for the specified path, or the default value if the path does not exist or the value is not a List of Strings
      */
     List<String> getStringList(String path, List<String> def);
@@ -115,7 +115,7 @@ public interface ConfigurationAdapter {
      * @param path The path to the file or resource.
      * @param def  The default Map to return if the path does not exist or cannot be read.
      * @return A Map of Strings representing the content of the specified path, or the default Map
-     *         if the path does not exist or cannot be read.
+     * if the path does not exist or cannot be read.
      */
     Map<String, String> getStringMap(String path, Map<String, String> def);
 
@@ -124,7 +124,7 @@ public interface ConfigurationAdapter {
      * If the value is not found, the default value is returned.
      *
      * @param path The path to the desired value in the map. The path is represented as a string separated by dots.
-     * @param def The default value to return if the path is not found in the map.
+     * @param def  The default value to return if the path is not found in the map.
      * @return The value corresponding to the path if found in the map, otherwise returns the default value.
      */
     Object get(String path, Object def);
@@ -133,7 +133,7 @@ public interface ConfigurationAdapter {
      * Retrieves the value at the specified path from the data structure.
      *
      * @param path the path to the object in the data structure
-     * @param def the default value to return if the specified path does not exist
+     * @param def  the default value to return if the specified path does not exist
      * @return the value at the specified path if it exists, otherwise returns the default value
      */
     Object set(String path, Object obj);

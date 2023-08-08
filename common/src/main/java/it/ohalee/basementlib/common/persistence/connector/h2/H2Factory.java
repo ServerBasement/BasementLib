@@ -4,8 +4,6 @@ import it.ohalee.basementlib.api.persistence.generic.connection.Connector;
 import it.ohalee.basementlib.api.persistence.generic.connection.TypeConnector;
 import it.ohalee.basementlib.api.persistence.sql.structure.AbstractSqlDatabase;
 import it.ohalee.basementlib.api.persistence.sql.structure.AbstractSqlHolder;
-import it.ohalee.basementlib.api.persistence.sql.structure.LocalFactory;
-import it.ohalee.basementlib.common.persistence.sql.SqlDatabase;
 import it.ohalee.basementlib.common.persistence.sql.SqlHolder;
 import it.ohalee.basementlib.common.plugin.AbstractBasementPlugin;
 import lombok.Getter;

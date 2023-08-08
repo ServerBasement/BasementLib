@@ -16,6 +16,8 @@ import it.ohalee.basementlib.api.redis.messages.implementation.ServerShutdownMes
 import it.ohalee.basementlib.api.redis.messages.implementation.VelocityNotifyMessage;
 import it.ohalee.basementlib.api.remote.RemoteVelocityService;
 import it.ohalee.basementlib.common.plugin.AbstractBasementPlugin;
+import it.ohalee.basementlib.common.plugin.bootstrap.BasementBootstrap;
+import it.ohalee.basementlib.common.plugin.classpath.ClassPathAppender;
 import it.ohalee.basementlib.common.plugin.logging.Slf4jPluginLogger;
 import it.ohalee.basementlib.velocity.commands.CreateServerCommand;
 import it.ohalee.basementlib.velocity.listeners.PlayerListener;
@@ -38,10 +40,11 @@ import java.util.concurrent.Executors;
         authors = {"ohAlee"}
 )
 @Getter
-public class BasementVelocity extends AbstractBasementPlugin {
+public class BasementVelocity extends AbstractBasementPlugin implements BasementBootstrap {
 
     @Getter(value = AccessLevel.NONE)
     private final Logger logger;
+    private final ClassPathAppender classPathAppender;
     @Inject
     private ProxyServer server;
     @Inject
@@ -51,6 +54,7 @@ public class BasementVelocity extends AbstractBasementPlugin {
     @Inject
     public BasementVelocity(Logger logger) {
         this.logger = logger;
+        this.classPathAppender = new VelocityClassPathAppender(this);
     }
 
     @Subscribe(order = PostOrder.FIRST)
@@ -77,6 +81,11 @@ public class BasementVelocity extends AbstractBasementPlugin {
     public void onProxyShutdown(ProxyShutdownEvent event) {
         if (redisManager() != null) redisManager().publishMessage(new VelocityNotifyMessage(true));
         disable();
+    }
+
+    @Override
+    public ClassPathAppender getClassPathAppender() {
+        return this.classPathAppender;
     }
 
     @Override

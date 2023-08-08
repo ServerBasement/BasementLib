@@ -7,7 +7,6 @@ import it.ohalee.basementlib.api.persistence.StorageCredentials;
 import it.ohalee.basementlib.api.persistence.generic.connection.Connector;
 import it.ohalee.basementlib.api.persistence.generic.connection.TypeConnector;
 import it.ohalee.basementlib.api.persistence.sql.structure.AbstractSqlDatabase;
-import it.ohalee.basementlib.api.persistence.sql.structure.LocalFactory;
 import it.ohalee.basementlib.api.plugin.BasementPlugin;
 import it.ohalee.basementlib.api.plugin.logging.PluginLogger;
 import it.ohalee.basementlib.api.redis.RedisCredentials;

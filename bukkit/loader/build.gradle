@@ -1,0 +1,35 @@
+plugins {
+    id 'com.github.johnrengelman.shadow'
+}
+
+repositories {
+    maven { url 'https://papermc.io/repo/repository/maven-public/' }
+}
+
+dependencies {
+    compileOnly 'com.destroystokyo.paper:paper-api:1.15.2-R0.1-SNAPSHOT'
+
+    implementation project(':api')
+    implementation project(':common:loader-utils')
+
+    compileOnly 'org.projectlombok:lombok:1.18.24'
+    annotationProcessor 'org.projectlombok:lombok:1.18.24'
+}
+
+processResources {
+    filesMatching('plugin.yml') {
+        expand 'pluginVersion': project.ext.fullVersion
+    }
+}
+
+shadowJar {
+    archiveFileName = "BasementLib-Bukkit-${project.ext.fullVersion}.jar"
+
+    from {
+        project(':bukkit').tasks.shadowJar.archiveFile
+    }
+}
+
+artifacts {
+    archives shadowJar
+}

@@ -1,18 +1,11 @@
 package it.ohalee.basementlib.common.persistence.sql.queries.table;
 
-import it.ohalee.basementlib.api.persistence.sql.queries.builders.table.QueryBuilderAlterTable;
-import it.ohalee.basementlib.api.persistence.sql.queries.builders.table.QueryBuilderTableExists;
 import it.ohalee.basementlib.api.persistence.sql.queries.builders.table.QueryBuilderTableExists;
 import it.ohalee.basementlib.api.persistence.sql.queries.effective.SqlQuery;
-import it.ohalee.basementlib.api.persistence.sql.structure.AbstractSqlTable;
 import it.ohalee.basementlib.common.persistence.sql.SqlDatabase;
-import it.ohalee.basementlib.common.persistence.sql.SqlTable;
-import it.ohalee.basementlib.common.persistence.structure.column.ForeignKeyDefinition;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.util.ArrayDeque;
-import java.util.Deque;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 import java.util.function.UnaryOperator;

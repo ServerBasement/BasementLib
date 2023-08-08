@@ -30,7 +30,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import org.checkerframework.checker.nullness.qual.Nullable;
-import org.redisson.remote.RemoteServiceAckTimeoutException;
 
 import java.io.File;
 import java.nio.file.Path;
@@ -55,6 +54,8 @@ public class BasementBukkitPlugin extends AbstractBasementPlugin implements Base
 
     @Override
     public void enable() {
+        logger().info("Enabling BasementLib Bukkit v" + plugin.getDescription().getVersion());
+
         super.enable();
 
         if (redisManager() == null || remoteCerebrumService() == null || !configuration.get(ConfigKeys.SERVER).isEmpty())
@@ -71,7 +72,7 @@ public class BasementBukkitPlugin extends AbstractBasementPlugin implements Base
         if (remoteVelocityService() != null) {
             try {
                 remoteVelocityService().registerServer(getServerID(), plugin.getServer().getPort());
-            } catch (RemoteServiceAckTimeoutException e) {
+            } catch (Exception e) {
                 plugin.getLogger().severe("Velocity is offline, server not registered");
             }
         }

@@ -7,7 +7,8 @@ import it.ohalee.basementlib.common.persistence.sql.SqlTable;
 import it.ohalee.basementlib.common.persistence.structure.column.ForeignKeyDefinition;
 
 import java.sql.PreparedStatement;
-import java.util.*;
+import java.util.ArrayDeque;
+import java.util.Deque;
 import java.util.concurrent.CompletableFuture;
 
 public class QueryAlterTable extends SqlQuery implements QueryBuilderAlterTable {

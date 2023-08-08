@@ -27,14 +27,20 @@ blossom {
 
 shadowJar {
     archiveFileName = "BasementLib-Velocity-${project.ext.fullVersion}.jar"
-    /*
+
     dependencies {
         include(dependency('it.ohalee.basementlib:.*'))
-        include(dependency('org.mariadb.jdbc:.*'))
-        include(dependency('com.zaxxer:HikariCP:.*'))
-        include(dependency('org.redisson:redisson:.*'))
     }
-    */
+
+    relocate 'io.netty', 'it.ohalee.basementlib.lib.netty'
+    relocate 'com.github.benmanes.caffeine', 'it.ohalee.basementlib.lib.caffeine'
+    relocate 'net.bytebuddy', 'it.ohalee.basementlib.bytebuddy'
+    relocate 'ninja.leaping.configurate', 'it.ohalee.basementlib.lib.configurate'
+    relocate 'org.checkerframework', 'it.ohalee.basementlib.lib.checkerframework'
+    // relocate 'org.mariadb.jdbc', 'it.ohalee.basementlib.lib.mariadb'
+    // relocate 'org.h2', 'it.ohalee.basementlib.lib.h2'
+    // relocate 'org.redisson', 'it.ohalee.basementlib.lib.redisson'
+    // relocate 'com.zaxxer.hikari', 'it.ohalee.basementlib.lib.hikari'
 }
 
 artifacts {

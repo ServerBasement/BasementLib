@@ -1,13 +1,3 @@
-/*
- *
- * This file is part of servercore - servercore.velocity.main | VelocityConfigAdapter.java
- *
- *  Copyright (c) ohAlee (Ale) <alebartoh@gmail.com>
- *  Copyright (c) 2021-2022.
- *
- *  You can't use this code without the owner permission.
- */
-
 package it.ohalee.basementlib.velocity;
 
 import it.ohalee.basementlib.api.config.generic.adapter.ConfigurateConfigAdapter;
