@@ -1,9 +1,3 @@
-test {
-    useJUnitPlatform {
-        excludeTags 'dependency_checksum'
-    }
-}
-
 dependencies {
     api project(':api')
 
