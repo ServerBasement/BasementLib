@@ -61,7 +61,7 @@ public class BasementVelocity extends AbstractBasementPlugin {
 
         if (redisManager() != null) {
             redisManager().registerTopicListener(ServerShutdownMessage.TOPIC, new ServerShutdownHandler(server));
-            redisManager().registerTopicListener(BukkitNotifyShutdownMessage.TOPIC, new BukkitNotifyShutdownHandler(server));
+            redisManager().registerTopicListener(BukkitNotifyShutdownMessage.TOPIC, new BukkitNotifyShutdownHandler(this, server));
 
             RRemoteService remoteService = redisManager().redissonClient().getRemoteService();
             remoteService.register(RemoteVelocityService.class, new RemoteVelocityServiceImpl(this), 3, Executors.newSingleThreadExecutor());
