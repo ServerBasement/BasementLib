@@ -5,6 +5,7 @@ import com.velocitypowered.api.proxy.ServerConnection;
 import com.velocitypowered.api.proxy.server.RegisteredServer;
 import com.velocitypowered.api.proxy.server.ServerInfo;
 import it.ohalee.basementlib.api.remote.RemoteVelocityService;
+import it.ohalee.basementlib.common.config.ConfigKeys;
 import it.ohalee.basementlib.velocity.BasementVelocity;
 import lombok.RequiredArgsConstructor;
 import net.kyori.adventure.text.Component;
@@ -124,6 +125,8 @@ public class RemoteVelocityServiceImpl implements RemoteVelocityService {
 
     @Override
     public void registerServer(String serverName, int port) {
+        if (!velocity.configuration().get(ConfigKeys.AUTOMATIC_REGISTER_SERVER)) return;
+
         Optional<RegisteredServer> serverOptional = velocity.getServer().getServer(serverName);
         ServerInfo newServer = new ServerInfo(serverName, new InetSocketAddress(serverName, port));
         if (serverOptional.isPresent()) {

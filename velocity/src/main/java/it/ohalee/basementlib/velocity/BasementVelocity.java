@@ -15,6 +15,7 @@ import it.ohalee.basementlib.api.redis.messages.implementation.BukkitNotifyShutd
 import it.ohalee.basementlib.api.redis.messages.implementation.ServerShutdownMessage;
 import it.ohalee.basementlib.api.redis.messages.implementation.VelocityNotifyMessage;
 import it.ohalee.basementlib.api.remote.RemoteVelocityService;
+import it.ohalee.basementlib.common.config.ConfigKeys;
 import it.ohalee.basementlib.common.plugin.AbstractBasementPlugin;
 import it.ohalee.basementlib.common.plugin.logging.Slf4jPluginLogger;
 import it.ohalee.basementlib.velocity.commands.CreateServerCommand;
@@ -67,7 +68,8 @@ public class BasementVelocity extends AbstractBasementPlugin {
 
             server.getCommandManager().register(server.getCommandManager().metaBuilder("createserver").aliases("cs").build(), new CreateServerCommand(this));
 
-            redisManager().publishMessage(new VelocityNotifyMessage(false));
+            if (configuration.get(ConfigKeys.AUTOMATIC_REGISTER_SERVER))
+                redisManager().publishMessage(new VelocityNotifyMessage(false));
 
             server.getEventManager().register(this, new PlayerListener(this));
         }
