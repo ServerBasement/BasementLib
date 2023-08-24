@@ -5,8 +5,9 @@
 # +----------------------------------------------------------------------------------------------+ #
 
 server:
-  # The id of the server. This is used to identify the server.
-  # If you are using Cerebrum to manage your servers, this is automatically set.
+  # Enable this if BasementLib is on a Velocity proxy, and you want to automatically register the servers.
+  automatic-register: false
+  # The id of the server. This is used to identify the server (only when automatic-register is true).
   id: "hub_1"
 
 # Settings for MariaDB.

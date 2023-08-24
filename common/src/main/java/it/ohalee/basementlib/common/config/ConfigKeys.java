@@ -25,6 +25,8 @@ public final class ConfigKeys {
 
     public static final ConfigKey<String> SERVER = lowercaseStringKey("server.id", "unknown");
 
+    public static final ConfigKey<Boolean> AUTOMATIC_REGISTER_SERVER = booleanKey("server.automatic-register", false);
+
     public static final ConfigKey<StorageCredentials> MYSQL_CREDENTIALS = notReloadable(key(c -> {
         int maxPoolSize = c.getInteger("mysql.pool-settings.maximum-pool-size", c.getInteger("mysql.pool-size", 10));
         int minIdle = c.getInteger("mysql.pool-settings.minimum-idle", maxPoolSize);

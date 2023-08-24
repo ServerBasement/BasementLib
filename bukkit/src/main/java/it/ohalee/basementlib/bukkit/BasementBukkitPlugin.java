@@ -45,7 +45,7 @@ public class BasementBukkitPlugin extends AbstractBasementPlugin implements Base
     private @Nullable BukkitServer server;
     private @Nullable BukkitTask task;
 
-    // Can be null if the version is not supported by the plugin
+    // Can be null if the plugin does not support the server version
     private @Nullable ScoreboardAdapter scoreboardAdapter;
     private ScoreboardManager scoreboardManager;
 
@@ -70,7 +70,8 @@ public class BasementBukkitPlugin extends AbstractBasementPlugin implements Base
 
         if (remoteVelocityService() != null) {
             try {
-                remoteVelocityService().registerServer(getServerID(), plugin.getServer().getPort());
+                if (configuration.get(ConfigKeys.AUTOMATIC_REGISTER_SERVER))
+                    remoteVelocityService().registerServer(getServerID(), plugin.getServer().getPort());
             } catch (RemoteServiceAckTimeoutException e) {
                 plugin.getLogger().severe("Velocity is offline, server not registered");
             }
