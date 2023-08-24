@@ -5,6 +5,22 @@ import java.util.UUID;
 public interface RemoteVelocityService {
 
     /**
+     * Checks if a player is online.
+     *
+     * @param player the name of the player to check
+     * @return true if the player is online, false otherwise
+     */
+    boolean isOnline(String player);
+
+    /**
+     * Checks if a player is online.
+     *
+     * @param player the UUID of the player to check
+     * @return true if the player is online, false otherwise
+     */
+    boolean isOnline(UUID player);
+
+    /**
      * Gets if a player is in a server that names start with {@param server}
      *
      * @param player the player name

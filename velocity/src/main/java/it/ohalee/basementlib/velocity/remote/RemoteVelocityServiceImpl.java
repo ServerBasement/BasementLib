@@ -24,6 +24,16 @@ public class RemoteVelocityServiceImpl implements RemoteVelocityService {
     private final BasementVelocity velocity;
 
     @Override
+    public boolean isOnline(UUID player) {
+        return velocity.getServer().getPlayer(player).isPresent();
+    }
+
+    @Override
+    public boolean isOnline(String player) {
+        return velocity.getServer().getPlayer(player).isPresent();
+    }
+
+    @Override
     public boolean isOnRanch(String player, String server) {
         Optional<Player> proxyPlayer = velocity.getServer().getPlayer(player);
         if (!proxyPlayer.isPresent()) return false;
