@@ -12,7 +12,7 @@ server:
 
 # Settings for MariaDB.
 mysql:
-  enabled: true
+  enabled: false
   address: localhost
   # Default database
   database: minecraft
@@ -29,7 +29,7 @@ mysql:
 # Settings for Redis.
 # Port 6379 is used by default; set address to "host:port" if differs
 redis:
-  enabled: true
+  enabled: false
   # If multiple addresses are specified, redis-cluster will be used.
   addresses:
     - "localhost"
