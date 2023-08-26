@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 public abstract class ConfigurateConfigAdapter implements ConfigurationAdapter {
     private final BasementPlugin plugin;
     private final Path path;
-    private ConfigurationNode root;
+    protected ConfigurationNode root;
 
     public ConfigurateConfigAdapter(BasementPlugin plugin, Path path) {
         this.plugin = plugin;
@@ -44,7 +44,7 @@ public abstract class ConfigurateConfigAdapter implements ConfigurationAdapter {
         }
     }
 
-    private ConfigurationNode resolvePath(String path) {
+    protected ConfigurationNode resolvePath(String path) {
         if (this.root == null) {
             throw new RuntimeException("Config is not loaded.");
         }
@@ -93,7 +93,7 @@ public abstract class ConfigurateConfigAdapter implements ConfigurationAdapter {
 
     @Override
     public Object section(String path) {
-        throw new UnsupportedOperationException("Method section is not supported in this adapter.");
+        return resolvePath(path);
     }
 
     @SuppressWarnings("unchecked")
