@@ -8,3 +8,15 @@ dependencies {
 
     compileOnly 'com.destroystokyo.paper:paper-api:1.15.2-R0.1-SNAPSHOT'
 }
+
+afterEvaluate {
+    publishing {
+        publications {
+            release(MavenPublication) {
+                groupId = 'com.github.ServerBasement.BasementLib'
+                artifactId = 'V1_8_R3'
+                version = '1.0'
+            }
+        }
+    }
+}
