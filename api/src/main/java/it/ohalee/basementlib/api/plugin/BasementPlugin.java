@@ -58,4 +58,5 @@ public interface BasementPlugin {
      * @return the configuration adapter
      */
     ConfigurationAdapter provideConfigurationAdapter(Class<?> clazz, File file, boolean create);
+
 }

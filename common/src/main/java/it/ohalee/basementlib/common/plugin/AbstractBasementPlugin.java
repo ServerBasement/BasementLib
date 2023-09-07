@@ -23,6 +23,7 @@ import it.ohalee.basementlib.common.persistence.connector.hikari.maria.MariaConn
 import it.ohalee.basementlib.common.persistence.connector.hikari.maria.MariaFactory;
 import it.ohalee.basementlib.common.redis.DefaultRedisManager;
 import it.ohalee.basementlib.common.server.DefaultServerManager;
+import ninja.leaping.configurate.ConfigurationNode;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.redisson.api.RRemoteService;
 
@@ -31,6 +32,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Arrays;
+import java.util.Map;
 import java.util.UUID;
 
 public abstract class AbstractBasementPlugin implements BasementPlugin, BasementLib {
@@ -186,7 +189,7 @@ public abstract class AbstractBasementPlugin implements BasementPlugin, Basement
         throw new IllegalArgumentException("Unknown type connector: " + type);
     }
 
-    public Path resolveConfig(Class<?> clazz, File file, boolean create) {
+    public Path resolveConfig(Class<?> loader, File file, boolean create) {
         Path configFile = file.toPath();
         // if the config doesn't exist, create it based on the template in the resources dir
         if (create && !Files.exists(configFile)) {
@@ -195,13 +198,38 @@ public abstract class AbstractBasementPlugin implements BasementPlugin, Basement
             } catch (IOException e) {
                 // ignore
             }
-            try (InputStream is = resourceStream(clazz, file.getName())) {
+            try (InputStream is = resourceStream(loader, file.getName())) {
                 Files.copy(is, configFile);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
         }
         return configFile;
+    }
+
+    public void update(Class<?> loader, String fileName, ConfigurationAdapter local) {
+        Path tmp = this.dataDirectory().resolve(fileName + ".tmp");
+        try (InputStream in = this.resourceStream(loader, fileName + ".yml")) {
+            Files.copy(in, tmp);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        ConfigurationAdapter original = this.provideConfigurationAdapter(null, tmp.toFile(), false);
+        ConfigurationNode section = (ConfigurationNode) original.section("");
+
+        for (Map.Entry<Object, ? extends ConfigurationNode> entry : section.getChildrenMap().entrySet()) {
+            String s = (entry.getKey() == null) ? "null" : entry.getKey().toString();
+
+            if (local.get(s, null) != null) continue;
+            local.set(s, section.getNode(Arrays.stream(s.split("\\.")).toArray()).getValue());
+        }
+
+        try {
+            Files.deleteIfExists(tmp);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public abstract PluginLogger provideLogger();

@@ -31,6 +31,11 @@ public class BukkitConfigAdapter implements ConfigurationAdapter {
     }
 
     @Override
+    public void update(Class<?> loader) {
+        this.plugin.update(loader, file.getName(), this);
+    }
+
+    @Override
     public void reload() {
         this.configuration = YamlConfiguration.loadConfiguration(this.file);
     }
@@ -106,10 +111,20 @@ public class BukkitConfigAdapter implements ConfigurationAdapter {
 
     @Override
     public Object set(String path, Object obj) {
+        return set(path, obj, true);
+    }
+
+    @Override
+    public Object set(String path, Object obj, boolean save) {
         this.configuration.set(path, obj);
+        if (save)
+            saveDefault();
+        return obj;
+    }
+
+    protected void saveDefault() {
         save();
         reload();
-        return obj;
     }
 
     @Override

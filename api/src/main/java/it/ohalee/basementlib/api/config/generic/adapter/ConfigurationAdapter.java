@@ -10,6 +10,8 @@ import java.util.Map;
  */
 public interface ConfigurationAdapter {
 
+    Object set(String path, Object obj, boolean save);
+
     /**
      * Retrieves the BasementPlugin instance.
      *
@@ -27,6 +29,12 @@ public interface ConfigurationAdapter {
      * @throws Exception if an error occurs during the reload operation.
      */
     void reload();
+
+    /**
+     * Updates the configuration
+     * This method is used to update the configuration settings.
+     */
+    void update(Class<?> loader);
 
     /**
      * Gets the value of a string property specified by the given path.
