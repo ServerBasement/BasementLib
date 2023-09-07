@@ -15,7 +15,9 @@ import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 
 import java.net.InetSocketAddress;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 public class RemoteVelocityServiceImpl implements RemoteVelocityService {
@@ -137,4 +139,8 @@ public class RemoteVelocityServiceImpl implements RemoteVelocityService {
         }
     }
 
+    @Override
+    public Set<String> getOnlinePlayers() {
+        return velocity.getServer().getAllPlayers().stream().map(Player::getUsername).collect(Collectors.toSet());
+    }
 }

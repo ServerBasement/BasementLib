@@ -1,5 +1,6 @@
 package it.ohalee.basementlib.api.remote;
 
+import java.util.Set;
 import java.util.UUID;
 
 public interface RemoteVelocityService {
@@ -94,5 +95,12 @@ public interface RemoteVelocityService {
      * @param port       the server port
      */
     void registerServer(String serverName, int port);
+
+    /**
+     * Returns a set of all online players.
+     *
+     * @return a set of strings representing the names of all online players
+     */
+    Set<String> getOnlinePlayers();
 
 }
