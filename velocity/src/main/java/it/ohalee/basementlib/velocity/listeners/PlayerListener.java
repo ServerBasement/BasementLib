@@ -4,6 +4,7 @@ import com.velocitypowered.api.event.PostOrder;
 import com.velocitypowered.api.event.Subscribe;
 import com.velocitypowered.api.event.connection.DisconnectEvent;
 import com.velocitypowered.api.event.connection.PostLoginEvent;
+import it.ohalee.basementlib.api.redis.messages.implementation.PlayerStatusChangeMessage;
 import it.ohalee.basementlib.velocity.BasementVelocity;
 import org.redisson.api.RAtomicLong;
 
@@ -21,11 +22,13 @@ public class PlayerListener {
     @Subscribe(order = PostOrder.FIRST)
     public void onLogged(PostLoginEvent event) {
         playersCount.set(velocity.getServer().getPlayerCount());
+        velocity.redisManager().publishMessage(new PlayerStatusChangeMessage(event.getPlayer().getUsername(), event.getPlayer().getUniqueId().toString(), true));
     }
 
     @Subscribe(order = PostOrder.LAST)
     private void onQuit(DisconnectEvent event) {
         playersCount.set(velocity.getServer().getPlayerCount());
+        velocity.redisManager().publishMessage(new PlayerStatusChangeMessage(event.getPlayer().getUsername(), event.getPlayer().getUniqueId().toString(), false));
     }
 
 }
