@@ -12,7 +12,7 @@ subprojects {
 
     project.ext.majorVersion = '1'
     project.ext.minorVersion = '3'
-    project.ext.superMinorVersion = '44'
+    project.ext.superMinorVersion = '45'
     project.ext.fullVersion = project.ext.majorVersion + '.' + project.ext.minorVersion + '.' + project.ext.superMinorVersion
     version = project.ext.fullVersion
 
