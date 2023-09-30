@@ -49,6 +49,7 @@ public final class ConfigKeys {
                 c.getStringList("redis.addresses", Collections.emptyList()),
                 c.getString("redis.username", null),
                 c.getString("redis.password", null),
+                c.getInteger("redis.database", 0),
                 c.getInteger("redis.netty-threads", 32),
                 c.getInteger("redis.threads", 16)
         );

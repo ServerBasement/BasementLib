@@ -15,6 +15,7 @@ public final class RedisCredentials {
     private final List<String> hosts;
     private final String username;
     private final String password;
+    private final int database;
     private final int nettyThreads;
     private final int threads;
 

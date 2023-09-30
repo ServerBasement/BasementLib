@@ -35,5 +35,6 @@ redis:
     - "localhost"
   username: ''
   password: ''
+  database: 0
   netty-threads: 32
   threads: 16

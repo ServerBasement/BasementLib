@@ -51,6 +51,7 @@ public class DefaultRedisManager implements RedisManager {
             credentials.hosts().forEach(System.out::println);
 
             SingleServerConfig serverConfig = config.useSingleServer();
+            serverConfig.setDatabase(credentials.database());
 
             String[] split = credentials.hosts().get(0).split(":");
             if (split.length == 1) serverConfig.setAddress("redis://" + split[0] + ":6379");
