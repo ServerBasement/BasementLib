@@ -7,7 +7,6 @@ import it.ohalee.basementlib.api.persistence.StorageCredentials;
 import it.ohalee.basementlib.api.persistence.generic.connection.Connector;
 import it.ohalee.basementlib.api.persistence.generic.connection.TypeConnector;
 import it.ohalee.basementlib.api.persistence.sql.structure.AbstractSqlDatabase;
-import it.ohalee.basementlib.api.persistence.sql.structure.LocalFactory;
 import it.ohalee.basementlib.api.plugin.BasementPlugin;
 import it.ohalee.basementlib.api.plugin.logging.PluginLogger;
 import it.ohalee.basementlib.api.redis.RedisCredentials;
@@ -17,6 +16,7 @@ import it.ohalee.basementlib.api.remote.RemoteVelocityService;
 import it.ohalee.basementlib.api.server.ServerManager;
 import it.ohalee.basementlib.common.config.BasementConfiguration;
 import it.ohalee.basementlib.common.config.ConfigKeys;
+import it.ohalee.basementlib.common.persistence.base.GlobalDatabase;
 import it.ohalee.basementlib.common.persistence.connector.h2.H2Connector;
 import it.ohalee.basementlib.common.persistence.connector.h2.H2Factory;
 import it.ohalee.basementlib.common.persistence.connector.hikari.maria.MariaConnector;
@@ -38,7 +38,7 @@ import java.util.UUID;
 
 public abstract class AbstractBasementPlugin implements BasementPlugin, BasementLib {
 
-    private static final UUID uuid = UUID.randomUUID();
+    private static UUID uuid;
     protected ConfigurationAdapter adapter;
     protected BasementConfiguration configuration;
     private @Nullable RedisManager redisManager;
@@ -47,6 +47,7 @@ public abstract class AbstractBasementPlugin implements BasementPlugin, Basement
     private @Nullable RemoteCerebrumService cerebrumService;
 
     private @Nullable MariaFactory mariaFactory;
+    private @Nullable GlobalDatabase globalDatabase;
     private H2Factory h2Factory;
 
     private PluginLogger logger;
@@ -79,6 +80,7 @@ public abstract class AbstractBasementPlugin implements BasementPlugin, Basement
             logger().info("Loading MariaDB database...");
 
             mariaFactory = new MariaFactory(this, storageCredentials);
+            globalDatabase = new GlobalDatabase(mariaFactory.holder().createDatabase("serverpanel").ifNotExists(true).build().execReturn());
         } else {
             logger().warn("MySQL is disabled. Some features will not work. It's recommended to enable it.");
         }
@@ -190,6 +192,10 @@ public abstract class AbstractBasementPlugin implements BasementPlugin, Basement
     public AbstractSqlDatabase maria() {
         if (mariaFactory == null) throw new IllegalStateException("MariaDB is not enabled");
         return mariaFactory.database();
+    }
+
+    public @Nullable GlobalDatabase globalDatabase() {
+        return globalDatabase;
     }
 
     @Override

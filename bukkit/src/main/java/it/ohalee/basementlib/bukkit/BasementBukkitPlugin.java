@@ -16,6 +16,7 @@ import it.ohalee.basementlib.api.redis.messages.implementation.VelocityNotifyMes
 import it.ohalee.basementlib.api.server.BukkitServer;
 import it.ohalee.basementlib.api.server.ServerStatus;
 import it.ohalee.basementlib.bukkit.commands.BasementBukkitCommand;
+import it.ohalee.basementlib.bukkit.listeners.BasementBukkitListener;
 import it.ohalee.basementlib.bukkit.placeholders.BasementPlaceholder;
 import it.ohalee.basementlib.bukkit.redis.handler.ServerShutdownHandler;
 import it.ohalee.basementlib.bukkit.redis.handler.VelocityNotifyHandler;
@@ -94,6 +95,14 @@ public class BasementBukkitPlugin extends AbstractBasementPlugin implements Base
             plugin.getLogger().warning("Scoreboard API not supported on this version of Minecraft (" + version + ")");
         }
 
+        if (globalDatabase() != null) {
+            globalDatabase().registerServer(getServerID(), version);
+
+            Bukkit.getScheduler().runTaskTimerAsynchronously(this.plugin, () -> {
+                globalDatabase().updateServer(Bukkit.getOnlinePlayers().size(), Bukkit.getMaxPlayers());
+            }, 10, 5 * 20);
+        }
+
         if (redisManager() != null) {
             redisManager().registerTopicListener(VelocityNotifyMessage.TOPIC, new VelocityNotifyHandler(this));
             redisManager().registerTopicListener(ServerShutdownMessage.TOPIC, new ServerShutdownHandler(this));
@@ -104,6 +113,7 @@ public class BasementBukkitPlugin extends AbstractBasementPlugin implements Base
 
     @Override
     public void disable() {
+        if (globalDatabase() != null) globalDatabase().updateOfflineServer();
         if (task != null) task.cancel();
         if (redisManager() != null) redisManager().publishMessage(new BukkitNotifyShutdownMessage(getServerID()));
         if (serverManager() != null) serverManager().removeServer(getServerID());
@@ -129,6 +139,7 @@ public class BasementBukkitPlugin extends AbstractBasementPlugin implements Base
 
     @Override
     protected void registerListeners() {
+        this.plugin.getServer().getPluginManager().registerEvents(new BasementBukkitListener(this), this.plugin);
     }
 
     @Override
