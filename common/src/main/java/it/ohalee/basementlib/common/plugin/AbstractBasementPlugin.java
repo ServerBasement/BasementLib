@@ -55,6 +55,18 @@ public abstract class AbstractBasementPlugin implements BasementPlugin, Basement
         logger = provideLogger();
 
         logger().info("Loading BasementLib...");
+
+        try {
+            Path configFile = configDirectory().resolve("server-uuid");
+            if (Files.exists(configFile)) {
+                uuid = UUID.fromString(new String(Files.readAllBytes(configFile)));
+            } else {
+                uuid = UUID.randomUUID();
+                Files.write(configFile, uuid.toString().getBytes());
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void enable() {
