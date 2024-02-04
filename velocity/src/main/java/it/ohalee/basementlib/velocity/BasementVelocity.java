@@ -5,6 +5,7 @@ import com.velocitypowered.api.event.PostOrder;
 import com.velocitypowered.api.event.Subscribe;
 import com.velocitypowered.api.event.proxy.ProxyInitializeEvent;
 import com.velocitypowered.api.event.proxy.ProxyShutdownEvent;
+import com.velocitypowered.api.plugin.Dependency;
 import com.velocitypowered.api.plugin.Plugin;
 import com.velocitypowered.api.plugin.annotation.DataDirectory;
 import com.velocitypowered.api.proxy.ProxyServer;
@@ -31,12 +32,16 @@ import org.slf4j.Logger;
 import java.io.File;
 import java.nio.file.Path;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 @Plugin(
         id = "basementlib",
         name = "BasementLib",
         version = "1.0",
-        authors = {"ohAlee"}
+        authors = {"ohAlee"},
+        dependencies = {
+                @Dependency(id = "spark", optional = true)
+        }
 )
 @Getter
 public class BasementVelocity extends AbstractBasementPlugin {
@@ -73,10 +78,20 @@ public class BasementVelocity extends AbstractBasementPlugin {
 
             server.getEventManager().register(this, new PlayerListener(this));
         }
+
+        if (globalDatabase() != null) {
+            globalDatabase().registerServer("velocity", this.server.getVersion().getVersion());
+
+            this.server.getScheduler()
+                    .buildTask(this, () -> globalDatabase().updateServer(this.server.getPlayerCount(), 0))
+                    .repeat(5, TimeUnit.SECONDS)
+                    .schedule();
+        }
     }
 
     @Subscribe
     public void onProxyShutdown(ProxyShutdownEvent event) {
+        if (globalDatabase() != null) globalDatabase().updateOfflineServer();
         if (redisManager() != null) redisManager().publishMessage(new VelocityNotifyMessage(true));
         disable();
     }
