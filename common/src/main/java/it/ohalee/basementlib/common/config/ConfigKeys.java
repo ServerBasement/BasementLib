@@ -55,6 +55,8 @@ public final class ConfigKeys {
         );
     }));
 
+    public static final ConfigKey<Boolean> ENABLE_GLOGAL_SERVER = booleanKey("server.global-enabled", false);
+
     private static final List<SimpleConfigKey<?>> KEYS = KeyedConfiguration.initialise(ConfigKeys.class);
 
     private ConfigKeys() {

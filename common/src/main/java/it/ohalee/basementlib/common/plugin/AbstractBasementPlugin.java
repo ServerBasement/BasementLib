@@ -80,7 +80,9 @@ public abstract class AbstractBasementPlugin implements BasementPlugin, Basement
             logger().info("Loading MariaDB database...");
 
             mariaFactory = new MariaFactory(this, storageCredentials);
-            globalDatabase = new GlobalDatabase(mariaFactory.holder().createDatabase("serverpanel").ifNotExists(true).build().execReturn());
+
+            if (configuration.get(ConfigKeys.ENABLE_GLOGAL_SERVER))
+                globalDatabase = new GlobalDatabase(mariaFactory.holder().createDatabase("serverpanel").ifNotExists(true).build().execReturn());
         } else {
             logger().warn("MySQL is disabled. Some features will not work. It's recommended to enable it.");
         }
