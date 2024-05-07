@@ -5,6 +5,5 @@ repositories {
 
 dependencies {
     api project(':api-bukkit')
-
-    compileOnly 'com.destroystokyo.paper:paper-api:1.15.2-R0.1-SNAPSHOT'
+    compileOnly files('libs/spigot-1.8.8-R0.1-SNAPSHOT-latest.jar')
 }

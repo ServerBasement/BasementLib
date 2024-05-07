@@ -1,10 +1,12 @@
 package it.ohalee.basementlib.bukkit.nms.v1_8_R3.scoreboard;
 
+import net.minecraft.server.v1_8_R3.PacketPlayOutScoreboardDisplayObjective;
+import net.minecraft.server.v1_8_R3.PacketPlayOutScoreboardObjective;
+import net.minecraft.server.v1_8_R3.PacketPlayOutScoreboardScore;
+import net.minecraft.server.v1_8_R3.PacketPlayOutScoreboardTeam;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.Nullable;
 
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Collections;
 
@@ -17,68 +19,43 @@ public class ScoreboardUtils implements it.ohalee.basementlib.api.bukkit.scorebo
 
     @Override
     public Object createObjectivePacket(int mode, String name, String displayName) {
-        try {
-            Object packet = getNMSClass("PacketPlayOutScoreboardObjective").newInstance();
-            setFieldValue(packet, "a", name);
-            setFieldValue(packet, "d", mode);
+        PacketPlayOutScoreboardObjective packet = new PacketPlayOutScoreboardObjective();
+        setFieldValue(packet, "a", name);
+        setFieldValue(packet, "d", mode);
 
-            if (mode == 0 || mode == 2) {
-                setFieldValue(packet, "b", displayName);
+        if (mode == 0 || mode == 2) {
+            setFieldValue(packet, "b", displayName);
 
-                Class<?> criteria = getNMSClass("IScoreboardCriteria.EnumScoreboardHealthDisplay");
-                setFieldValue(packet, "c", criteria.getEnumConstants()[0]);
-            }
-            return packet;
-        } catch (InstantiationException | IllegalAccessException e) {
-            e.printStackTrace();
+            setFieldValue(packet, "c", net.minecraft.server.v1_8_R3.IScoreboardCriteria.EnumScoreboardHealthDisplay.INTEGER);
         }
-        return null;
+        return packet;
     }
 
     @Override
     public Object createDisplayObjectivePacket(String name) {
-        try {
-            Object packet = getNMSClass("PacketPlayOutScoreboardObjective").newInstance();
-            setFieldValue(packet, "a", 1);
-            setFieldValue(packet, "b", name);
-            return packet;
-        } catch (InstantiationException | IllegalAccessException e) {
-            e.printStackTrace();
-        }
-        return null;
+        PacketPlayOutScoreboardDisplayObjective packet = new PacketPlayOutScoreboardDisplayObjective();
+        setFieldValue(packet, "a", 1);
+        setFieldValue(packet, "b", name);
+        return packet;
     }
 
     @Override
     public Object createScorePacket(String name, String line, int score) {
-        try {
-            Object packet = getNMSClass("PacketPlayOutScoreboardScore").getConstructor(String.class).newInstance(line);
-            setFieldValue(packet, "b", name);
-            setFieldValue(packet, "c", score);
-
-            Class<?> change = getNMSClass("PacketPlayOutScoreboardScore.EnumScoreboardAction");
-            setFieldValue(packet, "d", change.getEnumConstants()[0]);
-            return packet;
-        } catch (InstantiationException | IllegalAccessException | InvocationTargetException |
-                 NoSuchMethodException e) {
-            e.printStackTrace();
-        }
-        return null;
+        PacketPlayOutScoreboardScore packet = new PacketPlayOutScoreboardScore(line);
+        setFieldValue(packet, "b", name);
+        setFieldValue(packet, "c", score);
+        setFieldValue(packet, "d", PacketPlayOutScoreboardScore.EnumScoreboardAction.CHANGE);
+        return packet;
     }
 
     @Override
     public Object destroyScorePacket(String line) {
-        try {
-            return getNMSClass("PacketPlayOutScoreboardScore").getConstructor(String.class).newInstance(line);
-        } catch (InstantiationException | IllegalAccessException | InvocationTargetException |
-                 NoSuchMethodException e) {
-            e.printStackTrace();
-        }
-        return null;
+        return new PacketPlayOutScoreboardScore(line);
     }
 
     @Override
-    public Object createTeamPacket(int mode, String name, @Nullable String prefix, @Nullable String suffix) {
-        Class<?> packet = getNMSClass("PacketPlayOutScoreboardTeam");
+    public PacketPlayOutScoreboardTeam createTeamPacket(int mode, String name, String prefix, String suffix) {
+        PacketPlayOutScoreboardTeam packet = new PacketPlayOutScoreboardTeam();
 
         setFieldValue(packet, "h", mode);
         setFieldValue(packet, "a", name);
@@ -92,7 +69,7 @@ public class ScoreboardUtils implements it.ohalee.basementlib.api.bukkit.scorebo
 
     @Override
     public Object createUpdateUserPacket(int mode, String name, String user) {
-        Object packet = createTeamPacket(mode, name, null, null);
+        PacketPlayOutScoreboardTeam packet = createTeamPacket(mode, name, null, null);
         setFieldValue(packet, "g", Collections.singletonList(user));
         return packet;
     }
