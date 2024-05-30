@@ -5,10 +5,13 @@ import it.ohalee.basementlib.api.bukkit.scoreboard.board.task.lines.ScoreboardLi
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.UUID;
+
 public class ScoreboardLineImpl implements ScoreboardLine {
 
     private final ScoreboardAdapter adapter;
 
+    private final String uniqueId = UUID.randomUUID().toString().substring(4, 6) + UUID.randomUUID().toString().substring(9, 11);
     private final Player viewer;
     private final int row;
     private String oldContent = "";
@@ -57,7 +60,7 @@ public class ScoreboardLineImpl implements ScoreboardLine {
 
     @Override
     public String getTeamName() {
-        return "_team_" + row;
+        return uniqueId + "_team_" + row;
     }
 
     @Override
