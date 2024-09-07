@@ -78,7 +78,12 @@ public class BasementBukkitPlugin extends AbstractBasementPlugin implements Base
             }
         }
 
-        String version = plugin.getServer().getClass().getPackage().getName().split("\\.")[3];
+        String version = "unknown";
+        try {
+            version = plugin.getServer().getClass().getPackage().getName().split("\\.")[3];
+        } catch (ArrayIndexOutOfBoundsException e) {
+            plugin.getLogger().warning("Failed to get server version");
+        }
 
         try {
             Class<?> colorAdapter = Class.forName("it.ohalee.basementlib.bukkit.nms." + version + ".chat.ColorizerNMS");
