@@ -3,7 +3,9 @@ plugins {
 }
 
 repositories {
-    maven { url 'https://repo.extendedclip.com/content/repositories/placeholderapi/' }
+    maven {
+        url = 'https://repo.extendedclip.com/content/repositories/placeholderapi/'
+    }
 }
 
 dependencies {
@@ -17,7 +19,7 @@ dependencies {
     //implementation project('nms:V1_19_R1')
 
     compileOnly 'com.destroystokyo.paper:paper-api:1.15.2-R0.1-SNAPSHOT'
-    compileOnly 'me.clip:placeholderapi:2.11.1'
+    compileOnly 'me.clip:placeholderapi:2.11.6'
 
     compileOnly 'org.projectlombok:lombok:1.18.24'
     annotationProcessor 'org.projectlombok:lombok:1.18.24'
