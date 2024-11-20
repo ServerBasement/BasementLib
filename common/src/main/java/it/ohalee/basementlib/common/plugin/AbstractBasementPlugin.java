@@ -59,6 +59,11 @@ public abstract class AbstractBasementPlugin implements BasementPlugin, Basement
 
         try {
             Path configFile = configDirectory().resolve("server-uuid");
+
+            Path parentDir = configFile.getParent();
+            if (!Files.exists(parentDir))
+                Files.createDirectories(parentDir);
+
             if (Files.exists(configFile)) {
                 uuid = UUID.fromString(new String(Files.readAllBytes(configFile)));
             } else {
