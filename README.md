@@ -280,7 +280,7 @@ RedissonClient client=basementLib.redisManager().redissonClient();
 
 These services need Redis to work.
 
-RemoteCerebrumService allows via Cerebrum (software that manages servers in a modern and dynamic way via docker,
+RemoteCerebrumService allows via MineDock (software that manages servers in a modern and dynamic way via docker,
 available soon) to create and initialize servers even when the other servers are turned on
 
 ```java

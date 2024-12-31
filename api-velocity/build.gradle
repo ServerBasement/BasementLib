@@ -12,7 +12,7 @@ dependencies {
     compileOnly 'com.velocitypowered:velocity-api:3.1.0'
     annotationProcessor 'com.velocitypowered:velocity-api:3.1.0'
 }
-
+/*
 if (project.hasProperty('generateDocs')) {
     javadoc {
         title = 'BasementLib API-Velocity (v' + project.ext.fullVersion + ')'
@@ -71,4 +71,4 @@ if (project.hasProperty('generateDocs')) {
             }
         }
     }
-}
+}*/

@@ -50,9 +50,9 @@ public interface BasementLib {
     @Nullable RemoteVelocityService remoteVelocityService();
 
     /**
-     * Gets the remote instance of cerebrum service
+     * Gets the remote instance of minedock service
      *
-     * @return remote instance of cerebrum service
+     * @return remote instance of minedock service
      */
     @Nullable RemoteCerebrumService remoteCerebrumService();
 

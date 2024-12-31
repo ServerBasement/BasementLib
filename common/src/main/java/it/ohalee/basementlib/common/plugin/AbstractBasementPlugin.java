@@ -114,7 +114,7 @@ public abstract class AbstractBasementPlugin implements BasementPlugin, Basement
             try {
                 cerebrumService = remoteService.get(RemoteCerebrumService.class);
             } catch (Exception e) {
-                logger().warn("Cannot load cerebrum service. (Ignore if you are not using Cerebrum)");
+                logger().warn("Cannot load minedock service. (Ignore if you are not using Minedock)");
             }
         } else {
             logger().warn("Redis is disabled. Some features will not work. It's recommended to enable it.");

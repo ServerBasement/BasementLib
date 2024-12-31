@@ -20,7 +20,7 @@ public class CreateServerCommand implements SimpleCommand {
         if (velocity.remoteCerebrumService() != null)
             velocity.remoteCerebrumService().createServer(invocation.arguments()[0]);
         else {
-            invocation.source().sendMessage(Component.text("Cerebrum is not connected!", NamedTextColor.RED));
+            invocation.source().sendMessage(Component.text("Minedock is not connected!", NamedTextColor.RED));
         }
     }
 

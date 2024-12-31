@@ -5,7 +5,7 @@ dependencies {
 
     compileOnly 'com.destroystokyo.paper:paper-api:1.15.2-R0.1-SNAPSHOT'
 }
-
+/*
 if (project.hasProperty('generateDocs')) {
     javadoc {
         title = 'BasementLib API-Bukkit (v' + project.ext.fullVersion + ')'
@@ -64,4 +64,4 @@ if (project.hasProperty('generateDocs')) {
             }
         }
     }
-}
+}*/
